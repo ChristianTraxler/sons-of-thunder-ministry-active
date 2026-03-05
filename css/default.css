@@ -1,0 +1,20 @@
+/* =============================================
+   DEFAULT.CSS — Variables, Resets & Base Styles
+   ============================================= */
+
+:root {
+  --gold: #C9A84C;
+  --gold-light: #E8C96B;
+  --gold-dark: #8B6914;
+  --deep: #0D0A05;
+  --dark: #1A1508;
+  --mid: #2A2010;
+  --cream: #F5EED8;
+  --parchment: #EDE2C4;
+  --text: #D4C89A;
+  --text-muted: #8A7A50;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--deep); color: var(--text); font-family: 'Lora', serif; overflow-x: hidden; }

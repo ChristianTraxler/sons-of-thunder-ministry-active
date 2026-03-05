@@ -1,0 +1,24 @@
+{
+  "name": "sons-of-thunder-ministries-testing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChristianTraxler/sons-of-thunder-ministries-testing.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ChristianTraxler/sons-of-thunder-ministries-testing/issues"
+  },
+  "homepage": "https://github.com/ChristianTraxler/sons-of-thunder-ministries-testing#readme",
+  "dependencies": {
+    "puppeteer": "^24.37.5"
+  }
+}
