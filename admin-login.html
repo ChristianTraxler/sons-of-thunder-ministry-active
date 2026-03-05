@@ -86,9 +86,18 @@
 				</form>
 				<a href="#" class="back-link" id="backLink" style="display:none;">Back to login</a>
 				<p class="login-error" id="resetError"></p>
+
+				<!-- Credential save screen (shown after first setup) -->
+				<div id="credentialSave" style="display:none;">
+					<p class="credential-info">Copy the snippet below and paste it into <strong>js/admin-config.js</strong> so your login is saved permanently.</p>
+					<textarea class="credential-output" id="credentialOutput" readonly></textarea>
+					<button type="button" class="btn-login credential-copy-btn" id="copyCredBtn">Copy to Clipboard</button>
+					<a href="admin-dashboard.html" class="forgot-link" style="display:block; margin-top:1rem;">Continue to Dashboard</a>
+				</div>
 			</div>
 		</div>
 
+		<script src="js/admin-config.js"></script>
 		<script src="js/auth.js"></script>
 		<script>
 		(function () {
@@ -143,7 +152,37 @@
 			var resetErrorEl = document.getElementById('resetError');
 			var backLink = document.getElementById('backLink');
 
+			var credentialSave = document.getElementById('credentialSave');
+			var credentialOutput = document.getElementById('credentialOutput');
+			var copyCredBtn = document.getElementById('copyCredBtn');
+
 			var answerVerified = false;
+
+			// Show credential config after first setup
+			function showCredentialScreen() {
+				var creds = Auth.getCredentials();
+				var snippet = 'var AdminConfig = {\n'
+					+ "\tpasswordHash: '" + creds.passwordHash + "',\n"
+					+ "\tsecurityQuestion: '" + creds.securityQuestion.replace(/'/g, "\\'") + "',\n"
+					+ "\tsecurityAnswerHash: '" + creds.securityAnswerHash + "'\n"
+					+ '};';
+				credentialOutput.value = snippet;
+
+				form.style.display = 'none';
+				forgotLink.style.display = 'none';
+				errorEl.style.display = 'none';
+				titleEl.textContent = 'Credentials Saved';
+				subtitleEl.textContent = 'Save this config so you never lose access';
+				credentialSave.style.display = 'block';
+			}
+
+			copyCredBtn.addEventListener('click', function () {
+				credentialOutput.select();
+				navigator.clipboard.writeText(credentialOutput.value).then(function () {
+					copyCredBtn.textContent = 'Copied!';
+					setTimeout(function () { copyCredBtn.textContent = 'Copy to Clipboard'; }, 2000);
+				});
+			});
 
 			// First visit — show set-password UI with security question
 			if (Auth.isFirstVisit()) {
@@ -190,7 +229,7 @@
 							securityAnswerInput.value
 						);
 					}).then(function () {
-						window.location.href = 'admin-dashboard.html';
+						showCredentialScreen();
 					});
 				} else {
 					Auth.login(pw).then(function (success) {

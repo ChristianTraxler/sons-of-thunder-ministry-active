@@ -150,6 +150,39 @@
 	color: var(--gold);
 }
 
+.credential-info {
+	font-family: 'Lora', serif;
+	font-size: 0.85rem;
+	color: var(--text-muted);
+	line-height: 1.6;
+	margin-bottom: 1rem;
+	text-align: left;
+}
+
+.credential-info strong {
+	color: var(--gold);
+}
+
+.credential-output {
+	width: 100%;
+	min-height: 120px;
+	padding: 0.8rem;
+	background: rgba(0,0,0,0.3);
+	border: 1px solid rgba(201,168,76,0.2);
+	border-radius: 2px;
+	color: var(--cream);
+	font-family: monospace;
+	font-size: 0.75rem;
+	line-height: 1.6;
+	resize: none;
+	outline: none;
+	margin-bottom: 1rem;
+}
+
+.credential-output:focus {
+	border-color: var(--gold);
+}
+
 .login-card .btn-login {
 	width: 100%;
 	padding: 0.9rem;
@@ -402,6 +435,78 @@
 	width: 1px;
 	background: rgba(201,168,76,0.15);
 	margin: 4px 4px;
+}
+
+/* ---- HIGHLIGHT COLOR PICKER ---- */
+.highlight-picker {
+	position: relative;
+}
+
+.highlight-toggle {
+	display: flex;
+	align-items: center;
+	gap: 2px;
+	width: auto !important;
+	padding: 0 6px !important;
+}
+
+.highlight-swatch {
+	display: block;
+	width: 14px;
+	height: 4px;
+	border-radius: 1px;
+	position: absolute;
+	bottom: 4px;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.highlight-dropdown {
+	display: none;
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	transform: translateX(-50%);
+	margin-top: 4px;
+	background: rgba(13,10,5,0.97);
+	border: 1px solid rgba(201,168,76,0.3);
+	border-radius: 4px;
+	padding: 6px;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 4px;
+	z-index: 20;
+	display: none;
+}
+
+.highlight-dropdown.open {
+	display: grid;
+}
+
+.highlight-color-btn {
+	width: 26px !important;
+	height: 26px !important;
+	border-radius: 3px !important;
+	border: 1px solid rgba(255,255,255,0.15) !important;
+	cursor: pointer;
+	transition: transform 0.15s, border-color 0.15s;
+	padding: 0 !important;
+	font-size: 0.75rem !important;
+}
+
+.highlight-color-btn:hover {
+	transform: scale(1.15);
+	border-color: var(--gold) !important;
+	background: inherit;
+}
+
+.highlight-remove {
+	background: rgba(255,255,255,0.06) !important;
+	color: var(--text-muted);
+	font-size: 1rem !important;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .editor-content {

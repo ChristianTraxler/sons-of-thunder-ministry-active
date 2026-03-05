@@ -20,9 +20,22 @@ var RichEditor = (function () {
 		{ cmd: 'justifyRight', icon: '\u2262', title: 'Align Right' },
 		{ divider: true },
 		{ cmd: 'formatBlock', value: 'BLOCKQUOTE', icon: '\u201C', title: 'Quote' },
+		{ highlight: true },
 		{ divider: true },
 		{ cmd: 'undo', icon: '\u21A9', title: 'Undo' },
 		{ cmd: 'redo', icon: '\u21AA', title: 'Redo' }
+	];
+
+	var highlightColors = [
+		{ color: '#ffe066', label: 'Yellow' },
+		{ color: '#ffa94d', label: 'Orange' },
+		{ color: '#ff6b6b', label: 'Red' },
+		{ color: '#da77f2', label: 'Purple' },
+		{ color: '#74c0fc', label: 'Blue' },
+		{ color: '#69db7c', label: 'Green' },
+		{ color: '#fcc2d7', label: 'Pink' },
+		{ color: '#ffffff', label: 'White' },
+		{ color: null, label: 'Remove' }
 	];
 
 	function init(wrapperId) {
@@ -40,6 +53,12 @@ var RichEditor = (function () {
 				toolbar.appendChild(div);
 				return;
 			}
+
+			if (btn.highlight) {
+				buildHighlightPicker(toolbar);
+				return;
+			}
+
 			var button = document.createElement('button');
 			button.type = 'button';
 			button.innerHTML = btn.icon;
@@ -68,6 +87,65 @@ var RichEditor = (function () {
 
 		wrapper.appendChild(toolbar);
 		wrapper.appendChild(editor);
+	}
+
+	function buildHighlightPicker(parentEl) {
+		var container = document.createElement('div');
+		container.className = 'highlight-picker';
+
+		var toggleBtn = document.createElement('button');
+		toggleBtn.type = 'button';
+		toggleBtn.className = 'highlight-toggle';
+		toggleBtn.title = 'Highlight Color';
+		toggleBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>'
+			+ '<span class="highlight-swatch" style="background:#ffe066;"></span>';
+		toggleBtn.addEventListener('mousedown', function (e) {
+			e.preventDefault();
+		});
+		toggleBtn.addEventListener('click', function () {
+			dropdown.classList.toggle('open');
+		});
+
+		var dropdown = document.createElement('div');
+		dropdown.className = 'highlight-dropdown';
+
+		highlightColors.forEach(function (item) {
+			var swatch = document.createElement('button');
+			swatch.type = 'button';
+			swatch.className = 'highlight-color-btn';
+			swatch.title = item.label;
+			if (item.color) {
+				swatch.style.background = item.color;
+			} else {
+				swatch.innerHTML = '&times;';
+				swatch.classList.add('highlight-remove');
+			}
+			swatch.addEventListener('mousedown', function (e) {
+				e.preventDefault();
+			});
+			swatch.addEventListener('click', function () {
+				if (item.color) {
+					document.execCommand('hiliteColor', false, item.color);
+					toggleBtn.querySelector('.highlight-swatch').style.background = item.color;
+				} else {
+					document.execCommand('removeFormat', false, null);
+				}
+				dropdown.classList.remove('open');
+				editor.focus();
+			});
+			dropdown.appendChild(swatch);
+		});
+
+		container.appendChild(toggleBtn);
+		container.appendChild(dropdown);
+		parentEl.appendChild(container);
+
+		// Close dropdown when clicking outside
+		document.addEventListener('click', function (e) {
+			if (!container.contains(e.target)) {
+				dropdown.classList.remove('open');
+			}
+		});
 	}
 
 	function execCommand(cmd, value) {
