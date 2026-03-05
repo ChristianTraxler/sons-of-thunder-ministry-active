@@ -39,6 +39,24 @@
 	padding: 2rem;
 }
 
+.login-home-link {
+	position: absolute;
+	top: 1.5rem;
+	left: 1.5rem;
+	font-family: 'Cinzel', serif;
+	font-size: 1.1rem;
+	font-weight: 700;
+	color: var(--gold);
+	text-decoration: none;
+	letter-spacing: 0.1em;
+	opacity: 0.75;
+	transition: opacity 0.3s;
+}
+
+.login-home-link:hover {
+	opacity: 1;
+}
+
 .login-card {
 	width: 100%;
 	max-width: 400px;
@@ -122,6 +140,54 @@
 .login-card .btn-login:hover {
 	transform: translateY(-2px);
 	box-shadow: 0 8px 30px rgba(201,168,76,0.4);
+}
+
+.login-card input[type="text"] {
+	width: 100%;
+	padding: 0.8rem 1rem;
+	background: rgba(255,255,255,0.04);
+	border: 1px solid rgba(201,168,76,0.2);
+	border-radius: 2px;
+	color: var(--cream);
+	font-family: 'Lora', serif;
+	font-size: 0.95rem;
+	outline: none;
+	transition: border-color 0.3s;
+}
+
+.login-card input[type="text"]:focus {
+	border-color: var(--gold);
+}
+
+.login-card input[type="text"]::placeholder {
+	color: var(--text-muted);
+	opacity: 0.5;
+}
+
+.forgot-link,
+.back-link {
+	display: block;
+	margin-top: 1rem;
+	font-family: 'Lora', serif;
+	font-size: 0.8rem;
+	color: var(--text-muted);
+	text-decoration: none;
+	text-align: center;
+	transition: color 0.3s;
+}
+
+.forgot-link:hover,
+.back-link:hover {
+	color: var(--gold);
+}
+
+.reset-question {
+	font-family: 'Lora', serif;
+	font-size: 0.95rem;
+	color: var(--cream);
+	margin-bottom: 1.5rem;
+	line-height: 1.6;
+	font-style: italic;
 }
 
 .login-error {

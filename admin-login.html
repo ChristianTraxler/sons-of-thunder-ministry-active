@@ -12,6 +12,7 @@
 
 	<body>
 		<div class="admin-login-page">
+			<a href="index.html" class="login-home-link">STM</a>
 			<div class="login-card">
 				<span class="login-icon">
 					<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
@@ -19,6 +20,7 @@
 				<h1 id="loginTitle">Admin Login</h1>
 				<p class="login-subtitle" id="loginSubtitle">Enter your password to continue</p>
 
+				<!-- Login / Set Password form -->
 				<form id="loginForm">
 					<div class="form-group">
 						<label for="password">Password</label>
@@ -28,9 +30,38 @@
 						<label for="confirmPassword">Confirm Password</label>
 						<input type="password" id="confirmPassword" autocomplete="new-password">
 					</div>
+					<div class="form-group" id="securityQuestionGroup" style="display:none;">
+						<label for="securityQuestion">Security Question</label>
+						<input type="text" id="securityQuestion" placeholder="e.g. What is your pet's name?">
+					</div>
+					<div class="form-group" id="securityAnswerGroup" style="display:none;">
+						<label for="securityAnswer">Security Answer</label>
+						<input type="text" id="securityAnswer" placeholder="Your answer">
+					</div>
 					<button type="submit" class="btn-login" id="loginBtn">Login</button>
 				</form>
+				<a href="#" class="forgot-link" id="forgotLink" style="display:none;">Forgot password?</a>
 				<p class="login-error" id="loginError"></p>
+
+				<!-- Reset password form (hidden by default) -->
+				<form id="resetForm" style="display:none;">
+					<p class="reset-question" id="resetQuestionText"></p>
+					<div class="form-group">
+						<label for="resetAnswer">Your Answer</label>
+						<input type="text" id="resetAnswer" required>
+					</div>
+					<div class="form-group" id="newPasswordGroup" style="display:none;">
+						<label for="newPassword">New Password</label>
+						<input type="password" id="newPassword" autocomplete="new-password">
+					</div>
+					<div class="form-group" id="confirmNewGroup" style="display:none;">
+						<label for="confirmNewPassword">Confirm New Password</label>
+						<input type="password" id="confirmNewPassword" autocomplete="new-password">
+					</div>
+					<button type="submit" class="btn-login" id="resetBtn">Verify Answer</button>
+				</form>
+				<a href="#" class="back-link" id="backLink" style="display:none;">Back to login</a>
+				<p class="login-error" id="resetError"></p>
 			</div>
 		</div>
 
@@ -43,32 +74,58 @@
 				return;
 			}
 
+			// --- Login / Set-password elements ---
 			var form = document.getElementById('loginForm');
 			var passwordInput = document.getElementById('password');
 			var confirmInput = document.getElementById('confirmPassword');
 			var confirmGroup = document.getElementById('confirmGroup');
+			var securityQuestionGroup = document.getElementById('securityQuestionGroup');
+			var securityQuestionInput = document.getElementById('securityQuestion');
+			var securityAnswerGroup = document.getElementById('securityAnswerGroup');
+			var securityAnswerInput = document.getElementById('securityAnswer');
 			var errorEl = document.getElementById('loginError');
 			var titleEl = document.getElementById('loginTitle');
 			var subtitleEl = document.getElementById('loginSubtitle');
 			var btnEl = document.getElementById('loginBtn');
+			var forgotLink = document.getElementById('forgotLink');
 
-			// First visit — show set-password UI
+			// --- Reset-flow elements ---
+			var resetForm = document.getElementById('resetForm');
+			var resetQuestionText = document.getElementById('resetQuestionText');
+			var resetAnswerInput = document.getElementById('resetAnswer');
+			var newPasswordGroup = document.getElementById('newPasswordGroup');
+			var newPasswordInput = document.getElementById('newPassword');
+			var confirmNewGroup = document.getElementById('confirmNewGroup');
+			var confirmNewInput = document.getElementById('confirmNewPassword');
+			var resetBtn = document.getElementById('resetBtn');
+			var resetErrorEl = document.getElementById('resetError');
+			var backLink = document.getElementById('backLink');
+
+			var answerVerified = false;
+
+			// First visit — show set-password UI with security question
 			if (Auth.isFirstVisit()) {
 				titleEl.textContent = 'Set Password';
 				subtitleEl.textContent = 'Create your admin password';
 				confirmGroup.style.display = 'block';
 				confirmInput.required = true;
+				securityQuestionGroup.style.display = 'block';
+				securityQuestionInput.required = true;
+				securityAnswerGroup.style.display = 'block';
+				securityAnswerInput.required = true;
 				btnEl.textContent = 'Set Password';
 				passwordInput.autocomplete = 'new-password';
+			} else if (Auth.hasSecurityQuestion()) {
+				forgotLink.style.display = '';
 			}
 
+			// Login / Set-password submit
 			form.addEventListener('submit', function (e) {
 				e.preventDefault();
 				errorEl.textContent = '';
 				var pw = passwordInput.value;
 
 				if (Auth.isFirstVisit()) {
-					// Setting password
 					if (pw.length < 4) {
 						errorEl.textContent = 'Password must be at least 4 characters.';
 						return;
@@ -77,17 +134,99 @@
 						errorEl.textContent = 'Passwords do not match.';
 						return;
 					}
+					if (!securityQuestionInput.value.trim()) {
+						errorEl.textContent = 'Please enter a security question.';
+						return;
+					}
+					if (!securityAnswerInput.value.trim()) {
+						errorEl.textContent = 'Please enter a security answer.';
+						return;
+					}
 					Auth.setPassword(pw).then(function () {
+						return Auth.setSecurityQuestion(
+							securityQuestionInput.value.trim(),
+							securityAnswerInput.value
+						);
+					}).then(function () {
 						window.location.href = 'admin-dashboard.html';
 					});
 				} else {
-					// Logging in
 					Auth.login(pw).then(function (success) {
 						if (success) {
 							window.location.href = 'admin-dashboard.html';
 						} else {
 							errorEl.textContent = 'Incorrect password.';
 						}
+					});
+				}
+			});
+
+			// "Forgot password?" — switch to reset flow
+			forgotLink.addEventListener('click', function (e) {
+				e.preventDefault();
+				form.style.display = 'none';
+				forgotLink.style.display = 'none';
+				errorEl.textContent = '';
+
+				titleEl.textContent = 'Reset Password';
+				subtitleEl.textContent = 'Answer your security question';
+				resetQuestionText.textContent = Auth.getSecurityQuestion();
+				resetForm.style.display = '';
+				backLink.style.display = '';
+				answerVerified = false;
+				newPasswordGroup.style.display = 'none';
+				confirmNewGroup.style.display = 'none';
+				resetBtn.textContent = 'Verify Answer';
+				resetAnswerInput.value = '';
+				resetErrorEl.textContent = '';
+			});
+
+			// "Back to login" — return to login view
+			backLink.addEventListener('click', function (e) {
+				e.preventDefault();
+				resetForm.style.display = 'none';
+				backLink.style.display = 'none';
+				resetErrorEl.textContent = '';
+
+				titleEl.textContent = 'Admin Login';
+				subtitleEl.textContent = 'Enter your password to continue';
+				form.style.display = '';
+				forgotLink.style.display = '';
+				passwordInput.value = '';
+			});
+
+			// Reset form submit (verify answer, then set new password)
+			resetForm.addEventListener('submit', function (e) {
+				e.preventDefault();
+				resetErrorEl.textContent = '';
+
+				if (!answerVerified) {
+					Auth.verifySecurityAnswer(resetAnswerInput.value).then(function (correct) {
+						if (correct) {
+							answerVerified = true;
+							resetAnswerInput.disabled = true;
+							newPasswordGroup.style.display = 'block';
+							newPasswordInput.required = true;
+							confirmNewGroup.style.display = 'block';
+							confirmNewInput.required = true;
+							resetBtn.textContent = 'Set New Password';
+							newPasswordInput.focus();
+						} else {
+							resetErrorEl.textContent = 'Incorrect answer.';
+						}
+					});
+				} else {
+					var pw = newPasswordInput.value;
+					if (pw.length < 4) {
+						resetErrorEl.textContent = 'Password must be at least 4 characters.';
+						return;
+					}
+					if (pw !== confirmNewInput.value) {
+						resetErrorEl.textContent = 'Passwords do not match.';
+						return;
+					}
+					Auth.resetPassword(pw).then(function () {
+						window.location.href = 'admin-dashboard.html';
 					});
 				}
 			});
