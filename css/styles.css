@@ -21,7 +21,7 @@ nav.scrolled { background: rgba(13,10,5,0.97); border-bottom: 1px solid rgba(201
 .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
 .hamburger span { width: 24px; height: 2px; background: var(--gold); display: block; }
 .nav-give-item { list-style: none; }
-.mobile-nav-open { display: flex !important; flex-direction: column; position: fixed; top: 70px; left: 0; right: 0; background: rgba(13,10,5,0.98); padding: 2rem; gap: 1.5rem; border-bottom: 1px solid rgba(201,168,76,0.2); z-index: 99; }
+.mobile-nav-open { display: flex !important; flex-direction: column; position: fixed; top: 70px; left: 0; right: 0; transform: none; background: rgba(13,10,5,0.98); padding: 2rem; gap: 1.5rem; border-bottom: 1px solid rgba(201,168,76,0.2); z-index: 99; }
 
 /* HERO */
 header { position: relative; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; background: radial-gradient(ellipse 80% 60% at 50% 40%, #3d2a08 0%, #1a1204 50%, var(--deep) 100%); }
