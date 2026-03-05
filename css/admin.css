@@ -16,12 +16,17 @@
 	margin-right: 0.8rem;
 }
 .nav-admin:hover {
-	color: var(--gold);
+	color: var(--gold-light);
 	opacity: 1;
 }
 .nav-admin svg {
 	width: 20px;
 	height: 20px;
+}
+
+/* Admin link inside mobile menu — hidden on desktop, shown in hamburger menu on mobile */
+@media (min-width: 769px) {
+	.nav-admin-item { display: none; }
 }
 
 /* ---- LOGIN PAGE ---- */
