@@ -11,7 +11,7 @@ nav {
 }
 nav.scrolled { background: rgba(13,10,5,0.97); border-bottom: 1px solid rgba(201,168,76,0.2); backdrop-filter: blur(10px); }
 .nav-logo { font-family: 'Cinzel', serif; font-size: 1rem; font-weight: 700; color: var(--gold); letter-spacing: 0.1em; text-decoration: none; }
-.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links { display: flex; gap: 2rem; list-style: none; position: absolute; left: 50%; transform: translateX(-50%); }
 .nav-links a { font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); text-decoration: none; transition: color 0.3s; }
 .nav-links a:hover { color: var(--gold); }
 .nav-donate { font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--deep); background: var(--gold); padding: 0.5rem 1.2rem; border-radius: 2px; text-decoration: none; transition: background 0.3s, transform 0.2s; }
