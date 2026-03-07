@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Chariots for Jesus — Sons of Thunder Ministry, Inc.</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="css/default.css">
+		<link rel="stylesheet" href="css/styles.css">
+		<link rel="stylesheet" href="css/responsiveness.css">
+		<style>
+			.chariots-hero {
+				padding-top: 70px;
+				background: linear-gradient(180deg, var(--deep) 0%, var(--dark) 100%);
+				border-bottom: 1px solid rgba(201,168,76,0.1);
+			}
+
+			.chariots-content {
+				background: var(--dark);
+				border-bottom: 1px solid rgba(201,168,76,0.1);
+			}
+
+			.chariots-body {
+				max-width: 800px;
+				margin: 0 auto;
+			}
+
+			.chariots-body p {
+				font-size: 1.05rem;
+				line-height: 1.9;
+				color: var(--text);
+				margin-bottom: 1.3rem;
+			}
+
+			.chariots-hero-img {
+				width: 100%;
+				max-width: 800px;
+				margin: 2.5rem auto 0;
+				display: block;
+				border-radius: 4px;
+				border: 1px solid rgba(201,168,76,0.15);
+			}
+
+			.chariots-gallery {
+				background: var(--deep);
+			}
+
+			.chariots-gallery-grid {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				gap: 1.2rem;
+				margin-top: 2rem;
+			}
+
+			.chariots-gallery-grid img {
+				width: 100%;
+				aspect-ratio: 4/3;
+				object-fit: cover;
+				border-radius: 4px;
+				border: 1px solid rgba(201,168,76,0.15);
+				transition: transform 0.3s, border-color 0.3s;
+			}
+
+			.chariots-gallery-grid img:hover {
+				transform: translateY(-4px);
+				border-color: rgba(201,168,76,0.4);
+			}
+
+			@media (max-width: 600px) {
+				.chariots-gallery-grid {
+					grid-template-columns: 1fr;
+				}
+			}
+		</style>
+	</head>
+
+	<body>
+		<nav id="mainNav" class="scrolled">
+			<a href="index.html" class="nav-logo">STM</a>
+			<ul class="nav-links" id="navLinks">
+				<li><a href="index.html#about" onclick="closeMenu()">About</a></li>
+				<li><a href="index.html#ministries" onclick="closeMenu()">Ministries</a></li>
+				<li><a href="index.html#message" onclick="closeMenu()">Message</a></li>
+				<li><a href="index.html#board" onclick="closeMenu()">Board</a></li>
+				<li><a href="index.html#sermons" onclick="closeMenu()">Sermons</a></li>
+				<li class="nav-give-item"><a href="index.html#donate" onclick="closeMenu()" class="nav-donate nav-donate-menu">Give</a></li>
+			</ul>
+			<div class="nav-right">
+				<a href="index.html#donate" class="nav-donate nav-donate-desktop">Give</a>
+			</div>
+			<button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+				<span></span><span></span><span></span>
+			</button>
+		</nav>
+
+		<section class="chariots-hero">
+			<div class="section-inner">
+				<div class="section-label">Programs &amp; Ministries</div>
+				<h1 class="section-title" style="font-size:clamp(2rem, 5vw, 3.5rem);">Chariots for Jesus</h1>
+				<p style="max-width:650px; line-height:1.8; color:var(--text);">Expanding our mission and impact &#8212; bringing the gospel to the racing community and beyond.</p>
+				<img class="chariots-hero-img" src="images/chariots/hero.webp" alt="Chariots for Jesus ministry at the racetrack">
+			</div>
+		</section>
+
+		<section class="chariots-content">
+			<div class="section-inner">
+				<div class="chariots-body">
+					<p>Charlotte Motor Speedway requested that we discontinue transporting individuals with disabilities at the track. After years of faithful service, the speedway indicated they had contracted with &#8220;a new ministry that can handle our ministry,&#8221; making Sons of Thunder&#8217;s services no longer necessary at that venue.</p>
+					<p>Currently, Chariots for Jesus operates across multiple community locations. We recently approached the Balloon Rally seeking future partnership opportunities to continue expanding our reach and serving those in need.</p>
+					<p>The ministry continues its work at Mountain Creek Speedway, Charlotte Expo, CPLMS/CCMS, and potentially Millbridge Speedway. The Summer Shootout was awesome &#8212; we praise God for the doors He continues to open in the racing community.</p>
+					<p>Our missions initiative in Bimini proved successful, with plans to return. We ask for your continued community support as we address emerging needs and look for new ways to share the love of Christ.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="chariots-gallery">
+			<div class="section-inner" style="text-align:center;">
+				<div class="section-label">Gallery</div>
+				<h2 class="section-title" style="font-size:clamp(1.5rem, 4vw, 2.5rem);">Ministry in Action</h2>
+				<div class="chariots-gallery-grid">
+					<img src="images/chariots/gallery-1.webp" alt="Chariots for Jesus ministry outreach">
+					<img src="images/chariots/gallery-2.webp" alt="Chariots for Jesus at the racetrack">
+					<img src="images/chariots/gallery-3.webp" alt="Chariots for Jesus community service">
+				</div>
+			</div>
+		</section>
+
+		<footer>
+			<div class="footer-logo">Sons of Thunder Ministry</div>
+			<p class="footer-tagline">"Lifting up the name of Jesus one lap at a time"</p>
+			<ul class="footer-links">
+				<li><a href="index.html#about">About</a></li>
+				<li><a href="index.html#ministries">Ministries</a></li>
+				<li><a href="index.html#message">Message</a></li>
+				<li><a href="index.html#board">Board</a></li>
+				<li><a href="index.html#sermons">Sermons</a></li>
+				<li><a href="index.html#donate">Donate</a></li>
+				<li><a href="https://www.youtube.com/@hughcompton4575" target="_blank">YouTube</a></li>
+			</ul>
+			<div class="footer-bottom">
+				<p>Sons of Thunder Ministry, Inc. &nbsp;&#183;&nbsp; Mooresville, NC &nbsp;&#183;&nbsp; 501(c)(3) EIN 20-0522987</p>
+				<p style="margin-top:0.4rem;">Made by <a href="https://developerofcode.com" target="_blank">Developer of Code, LLC</a></p>
+			</div>
+		</footer>
+
+		<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">
+			<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+		</button>
+
+		<script>
+		var scrollTopBtn = document.getElementById('scrollTop');
+		window.addEventListener('scroll', function() {
+			scrollTopBtn.classList.toggle('visible', window.scrollY > 400);
+		});
+
+		function toggleMenu() {
+			document.getElementById('navLinks').classList.toggle('mobile-nav-open');
+		}
+		function closeMenu() {
+			document.getElementById('navLinks').classList.remove('mobile-nav-open');
+		}
+		</script>
+	</body>
+</html>

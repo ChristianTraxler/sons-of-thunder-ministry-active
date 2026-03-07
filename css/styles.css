@@ -96,6 +96,10 @@ section { position: relative; overflow: hidden; }
 .ministry-icon { font-size: 2rem; margin-bottom: 1rem; display: block; }
 .ministry-card h3 { font-family: 'Cinzel', serif; font-size: 0.95rem; font-weight: 700; color: var(--gold); margin-bottom: 0.6rem; letter-spacing: 0.05em; }
 .ministry-card p { font-size: 0.9rem; line-height: 1.7; color: var(--text-muted); }
+a.ministry-card-link { text-decoration: none; display: block; cursor: pointer; color: inherit; }
+a.ministry-card-link:visited { color: inherit; }
+a.ministry-card-link:visited h3 { color: var(--gold); }
+a.ministry-card-link:visited p { color: var(--text-muted); }
 
 /* MESSAGE */
 .message-section { background: linear-gradient(180deg, var(--dark), var(--mid)); border-top: 1px solid rgba(201,168,76,0.1); }
