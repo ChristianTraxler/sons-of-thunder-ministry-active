@@ -18,10 +18,14 @@
 					<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
 				</span>
 				<h1 id="loginTitle">Admin Login</h1>
-				<p class="login-subtitle" id="loginSubtitle">Enter your password to continue</p>
+				<p class="login-subtitle" id="loginSubtitle">Sign in with your admin email</p>
 
-				<!-- Login / Set Password form -->
+				<!-- Login form -->
 				<form id="loginForm">
+					<div class="form-group">
+						<label for="email">Email</label>
+						<input type="email" id="email" autocomplete="username" required>
+					</div>
 					<div class="form-group">
 						<label for="password">Password</label>
 						<div class="password-wrapper">
@@ -32,76 +36,30 @@
 							</button>
 						</div>
 					</div>
-					<div class="form-group" id="confirmGroup" style="display:none;">
-						<label for="confirmPassword">Confirm Password</label>
-						<div class="password-wrapper">
-							<input type="password" id="confirmPassword" autocomplete="new-password">
-							<button type="button" class="toggle-password" aria-label="Toggle password visibility">
-								<svg class="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-								<svg class="eye-off-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
-							</button>
-						</div>
-					</div>
-					<div class="form-group" id="securityQuestionGroup" style="display:none;">
-						<label for="securityQuestion">Security Question</label>
-						<input type="text" id="securityQuestion" placeholder="e.g. What is your pet's name?">
-					</div>
-					<div class="form-group" id="securityAnswerGroup" style="display:none;">
-						<label for="securityAnswer">Security Answer</label>
-						<input type="text" id="securityAnswer" placeholder="Your answer">
-					</div>
 					<button type="submit" class="btn-login" id="loginBtn">Login</button>
 				</form>
-				<a href="#" class="forgot-link" id="forgotLink" style="display:none;">Forgot password?</a>
+				<a href="#" class="forgot-link" id="forgotLink">Forgot password?</a>
 				<p class="login-error" id="loginError"></p>
 
-				<!-- Reset password form (hidden by default) -->
+				<!-- Password reset form -->
 				<form id="resetForm" style="display:none;">
-					<p class="reset-question" id="resetQuestionText"></p>
 					<div class="form-group">
-						<label for="resetAnswer">Your Answer</label>
-						<input type="text" id="resetAnswer" required>
+						<label for="resetEmail">Email</label>
+						<input type="email" id="resetEmail" autocomplete="username" required>
 					</div>
-					<div class="form-group" id="newPasswordGroup" style="display:none;">
-						<label for="newPassword">New Password</label>
-						<div class="password-wrapper">
-							<input type="password" id="newPassword" autocomplete="new-password">
-							<button type="button" class="toggle-password" aria-label="Toggle password visibility">
-								<svg class="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-								<svg class="eye-off-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
-							</button>
-						</div>
-					</div>
-					<div class="form-group" id="confirmNewGroup" style="display:none;">
-						<label for="confirmNewPassword">Confirm New Password</label>
-						<div class="password-wrapper">
-							<input type="password" id="confirmNewPassword" autocomplete="new-password">
-							<button type="button" class="toggle-password" aria-label="Toggle password visibility">
-								<svg class="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-								<svg class="eye-off-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
-							</button>
-						</div>
-					</div>
-					<button type="submit" class="btn-login" id="resetBtn">Verify Answer</button>
+					<button type="submit" class="btn-login" id="resetBtn">Send Reset Email</button>
 				</form>
 				<a href="#" class="back-link" id="backLink" style="display:none;">Back to login</a>
-				<p class="login-error" id="resetError"></p>
-
-				<!-- Credential save screen (shown after first setup) -->
-				<div id="credentialSave" style="display:none;">
-					<p class="credential-info">Copy the snippet below and paste it into <strong>js/admin-config.js</strong> so your login is saved permanently.</p>
-					<textarea class="credential-output" id="credentialOutput" readonly></textarea>
-					<button type="button" class="btn-login credential-copy-btn" id="copyCredBtn">Copy to Clipboard</button>
-					<a href="admin-dashboard.html" class="forgot-link" style="display:block; margin-top:1rem;">Continue to Dashboard</a>
-				</div>
+				<p class="login-error" id="resetMessage"></p>
 			</div>
 		</div>
 
-		<script src="js/admin-config.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+		<script src="js/supabase-client.js"></script>
 		<script src="js/auth.js"></script>
 		<script>
 		(function () {
-			// Toggle password visibility for all toggle buttons
+			// Toggle password visibility
 			document.querySelectorAll('.toggle-password').forEach(function (btn) {
 				btn.addEventListener('click', function () {
 					var input = btn.parentElement.querySelector('input');
@@ -119,197 +77,89 @@
 				});
 			});
 
-			// If already logged in, go to dashboard
-			if (Auth.isLoggedIn()) {
-				window.location.href = 'admin-dashboard.html';
-				return;
-			}
-
-			// --- Login / Set-password elements ---
-			var form = document.getElementById('loginForm');
+			var loginForm = document.getElementById('loginForm');
+			var emailInput = document.getElementById('email');
 			var passwordInput = document.getElementById('password');
-			var confirmInput = document.getElementById('confirmPassword');
-			var confirmGroup = document.getElementById('confirmGroup');
-			var securityQuestionGroup = document.getElementById('securityQuestionGroup');
-			var securityQuestionInput = document.getElementById('securityQuestion');
-			var securityAnswerGroup = document.getElementById('securityAnswerGroup');
-			var securityAnswerInput = document.getElementById('securityAnswer');
+			var loginBtn = document.getElementById('loginBtn');
 			var errorEl = document.getElementById('loginError');
+			var forgotLink = document.getElementById('forgotLink');
 			var titleEl = document.getElementById('loginTitle');
 			var subtitleEl = document.getElementById('loginSubtitle');
-			var btnEl = document.getElementById('loginBtn');
-			var forgotLink = document.getElementById('forgotLink');
 
-			// --- Reset-flow elements ---
 			var resetForm = document.getElementById('resetForm');
-			var resetQuestionText = document.getElementById('resetQuestionText');
-			var resetAnswerInput = document.getElementById('resetAnswer');
-			var newPasswordGroup = document.getElementById('newPasswordGroup');
-			var newPasswordInput = document.getElementById('newPassword');
-			var confirmNewGroup = document.getElementById('confirmNewGroup');
-			var confirmNewInput = document.getElementById('confirmNewPassword');
+			var resetEmailInput = document.getElementById('resetEmail');
 			var resetBtn = document.getElementById('resetBtn');
-			var resetErrorEl = document.getElementById('resetError');
+			var resetMessage = document.getElementById('resetMessage');
 			var backLink = document.getElementById('backLink');
 
-			var credentialSave = document.getElementById('credentialSave');
-			var credentialOutput = document.getElementById('credentialOutput');
-			var copyCredBtn = document.getElementById('copyCredBtn');
+			// If already logged in, skip to dashboard
+			Auth.getSession().then(function (session) {
+				if (session) window.location.href = 'admin-dashboard.html';
+			});
 
-			var answerVerified = false;
+			// Login submit
+			loginForm.addEventListener('submit', function (e) {
+				e.preventDefault();
+				errorEl.textContent = '';
+				loginBtn.disabled = true;
+				loginBtn.textContent = 'Signing in…';
 
-			// Show credential config after first setup
-			function showCredentialScreen() {
-				var creds = Auth.getCredentials();
-				var snippet = 'var AdminConfig = {\n'
-					+ "\tpasswordHash: '" + creds.passwordHash + "',\n"
-					+ "\tsecurityQuestion: '" + creds.securityQuestion.replace(/'/g, "\\'") + "',\n"
-					+ "\tsecurityAnswerHash: '" + creds.securityAnswerHash + "'\n"
-					+ '};';
-				credentialOutput.value = snippet;
-
-				form.style.display = 'none';
-				forgotLink.style.display = 'none';
-				errorEl.style.display = 'none';
-				titleEl.textContent = 'Credentials Saved';
-				subtitleEl.textContent = 'Save this config so you never lose access';
-				credentialSave.style.display = 'block';
-			}
-
-			copyCredBtn.addEventListener('click', function () {
-				credentialOutput.select();
-				navigator.clipboard.writeText(credentialOutput.value).then(function () {
-					copyCredBtn.textContent = 'Copied!';
-					setTimeout(function () { copyCredBtn.textContent = 'Copy to Clipboard'; }, 2000);
+				Auth.login(emailInput.value.trim(), passwordInput.value).then(function (res) {
+					if (res.ok) {
+						window.location.href = 'admin-dashboard.html';
+					} else {
+						errorEl.textContent = res.error || 'Incorrect email or password.';
+						loginBtn.disabled = false;
+						loginBtn.textContent = 'Login';
+					}
 				});
 			});
 
-			// First visit — show set-password UI with security question
-			if (Auth.isFirstVisit()) {
-				titleEl.textContent = 'Set Password';
-				subtitleEl.textContent = 'Create your admin password';
-				confirmGroup.style.display = 'block';
-				confirmInput.required = true;
-				securityQuestionGroup.style.display = 'block';
-				securityQuestionInput.required = true;
-				securityAnswerGroup.style.display = 'block';
-				securityAnswerInput.required = true;
-				btnEl.textContent = 'Set Password';
-				passwordInput.autocomplete = 'new-password';
-			} else if (Auth.hasSecurityQuestion()) {
-				forgotLink.style.display = '';
-			}
-
-			// Login / Set-password submit
-			form.addEventListener('submit', function (e) {
-				e.preventDefault();
-				errorEl.textContent = '';
-				var pw = passwordInput.value;
-
-				if (Auth.isFirstVisit()) {
-					if (pw.length < 4) {
-						errorEl.textContent = 'Password must be at least 4 characters.';
-						return;
-					}
-					if (pw !== confirmInput.value) {
-						errorEl.textContent = 'Passwords do not match.';
-						return;
-					}
-					if (!securityQuestionInput.value.trim()) {
-						errorEl.textContent = 'Please enter a security question.';
-						return;
-					}
-					if (!securityAnswerInput.value.trim()) {
-						errorEl.textContent = 'Please enter a security answer.';
-						return;
-					}
-					Auth.setPassword(pw).then(function () {
-						return Auth.setSecurityQuestion(
-							securityQuestionInput.value.trim(),
-							securityAnswerInput.value
-						);
-					}).then(function () {
-						showCredentialScreen();
-					});
-				} else {
-					Auth.login(pw).then(function (success) {
-						if (success) {
-							window.location.href = 'admin-dashboard.html';
-						} else {
-							errorEl.textContent = 'Incorrect password.';
-						}
-					});
-				}
-			});
-
-			// "Forgot password?" — switch to reset flow
+			// Forgot password → show reset form
 			forgotLink.addEventListener('click', function (e) {
 				e.preventDefault();
-				form.style.display = 'none';
+				loginForm.style.display = 'none';
 				forgotLink.style.display = 'none';
 				errorEl.textContent = '';
-
+				resetMessage.textContent = '';
+				resetMessage.classList.remove('login-success');
 				titleEl.textContent = 'Reset Password';
-				subtitleEl.textContent = 'Answer your security question';
-				resetQuestionText.textContent = Auth.getSecurityQuestion();
+				subtitleEl.textContent = 'Enter your email — we\u2019ll send a reset link';
+				resetEmailInput.value = emailInput.value;
 				resetForm.style.display = '';
 				backLink.style.display = '';
-				answerVerified = false;
-				newPasswordGroup.style.display = 'none';
-				confirmNewGroup.style.display = 'none';
-				resetBtn.textContent = 'Verify Answer';
-				resetAnswerInput.value = '';
-				resetErrorEl.textContent = '';
 			});
 
-			// "Back to login" — return to login view
+			// Back to login
 			backLink.addEventListener('click', function (e) {
 				e.preventDefault();
 				resetForm.style.display = 'none';
 				backLink.style.display = 'none';
-				resetErrorEl.textContent = '';
-
+				resetMessage.textContent = '';
 				titleEl.textContent = 'Admin Login';
-				subtitleEl.textContent = 'Enter your password to continue';
-				form.style.display = '';
+				subtitleEl.textContent = 'Sign in with your admin email';
+				loginForm.style.display = '';
 				forgotLink.style.display = '';
-				passwordInput.value = '';
 			});
 
-			// Reset form submit (verify answer, then set new password)
+			// Reset submit
 			resetForm.addEventListener('submit', function (e) {
 				e.preventDefault();
-				resetErrorEl.textContent = '';
+				resetMessage.textContent = '';
+				resetMessage.classList.remove('login-success');
+				resetBtn.disabled = true;
+				resetBtn.textContent = 'Sending…';
 
-				if (!answerVerified) {
-					Auth.verifySecurityAnswer(resetAnswerInput.value).then(function (correct) {
-						if (correct) {
-							answerVerified = true;
-							resetAnswerInput.disabled = true;
-							newPasswordGroup.style.display = 'block';
-							newPasswordInput.required = true;
-							confirmNewGroup.style.display = 'block';
-							confirmNewInput.required = true;
-							resetBtn.textContent = 'Set New Password';
-							newPasswordInput.focus();
-						} else {
-							resetErrorEl.textContent = 'Incorrect answer.';
-						}
-					});
-				} else {
-					var pw = newPasswordInput.value;
-					if (pw.length < 4) {
-						resetErrorEl.textContent = 'Password must be at least 4 characters.';
-						return;
+				Auth.sendPasswordReset(resetEmailInput.value.trim()).then(function (res) {
+					resetBtn.disabled = false;
+					resetBtn.textContent = 'Send Reset Email';
+					if (res.ok) {
+						resetMessage.textContent = 'Check your email for a reset link.';
+						resetMessage.classList.add('login-success');
+					} else {
+						resetMessage.textContent = res.error || 'Could not send reset email.';
 					}
-					if (pw !== confirmNewInput.value) {
-						resetErrorEl.textContent = 'Passwords do not match.';
-						return;
-					}
-					Auth.resetPassword(pw).then(function () {
-						window.location.href = 'admin-dashboard.html';
-					});
-				}
+				});
 			});
 		})();
 		</script>

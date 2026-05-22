@@ -1,10 +1,13 @@
 /* =============================================
-   SERMONS.JS — Sermon CRUD Module
-   localStorage key: sot_sermons (JSON array)
+   SERMONS.JS — Sermon CRUD Module (Supabase)
+
+   All methods return promises. DB columns use
+   snake_case; UI code uses camelCase, so this
+   module translates at the boundary.
    ============================================= */
 
 var Sermons = (function () {
-	var STORAGE_KEY = 'sot_sermons';
+	var TABLE = 'sermons';
 
 	// Extract YouTube video ID from any URL format
 	function parseYouTubeId(url) {
@@ -21,63 +24,101 @@ var Sermons = (function () {
 			var match = url.match(patterns[i]);
 			if (match) return match[1];
 		}
-		// If it's just an 11-char string, treat as video ID
 		if (/^[a-zA-Z0-9_-]{11}$/.test(url)) return url;
 		return null;
 	}
 
+	// DB row → UI object
+	function fromRow(row) {
+		if (!row) return null;
+		return {
+			id: row.id,
+			title: row.title || '',
+			author: row.author || '',
+			youtubeUrl: row.youtube_url || '',
+			youtubeId: row.youtube_id || null,
+			date: row.date || '',
+			content: row.content || '',
+			createdAt: row.created_at
+		};
+	}
+
+	// UI object → DB row (for insert/update)
+	function toRow(obj) {
+		var row = {};
+		if ('title' in obj)       row.title = obj.title;
+		if ('author' in obj)      row.author = obj.author;
+		if ('youtubeUrl' in obj)  row.youtube_url = obj.youtubeUrl;
+		if ('date' in obj)        row.date = obj.date || null;
+		if ('content' in obj)     row.content = obj.content;
+		if ('youtubeUrl' in obj)  row.youtube_id = parseYouTubeId(obj.youtubeUrl);
+		return row;
+	}
+
 	// Get all sermons sorted by date (newest first)
 	function getAll() {
-		var data = localStorage.getItem(STORAGE_KEY);
-		var sermons = data ? JSON.parse(data) : [];
-		sermons.sort(function (a, b) {
-			return new Date(b.date) - new Date(a.date);
-		});
-		return sermons;
-	}
-
-	// Get a single sermon by ID
-	function getById(id) {
-		var sermons = getAll();
-		for (var i = 0; i < sermons.length; i++) {
-			if (sermons[i].id === id) return sermons[i];
-		}
-		return null;
-	}
-
-	// Save a new sermon
-	function save(sermon) {
-		var sermons = getAll();
-		sermon.id = Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
-		sermon.youtubeId = parseYouTubeId(sermon.youtubeUrl);
-		sermon.createdAt = new Date().toISOString();
-		sermons.push(sermon);
-		localStorage.setItem(STORAGE_KEY, JSON.stringify(sermons));
-		return sermon;
-	}
-
-	// Update an existing sermon
-	function update(id, updates) {
-		var sermons = getAll();
-		for (var i = 0; i < sermons.length; i++) {
-			if (sermons[i].id === id) {
-				for (var key in updates) {
-					sermons[i][key] = updates[key];
+		return sb.from(TABLE)
+			.select('*')
+			.order('date', { ascending: false, nullsFirst: false })
+			.then(function (res) {
+				if (res.error) {
+					console.error('Sermons.getAll', res.error);
+					return [];
 				}
-				sermons[i].youtubeId = parseYouTubeId(sermons[i].youtubeUrl);
-				sermons[i].updatedAt = new Date().toISOString();
-				localStorage.setItem(STORAGE_KEY, JSON.stringify(sermons));
-				return sermons[i];
-			}
-		}
-		return null;
+				return (res.data || []).map(fromRow);
+			});
 	}
 
-	// Remove a sermon by ID
+	function getById(id) {
+		return sb.from(TABLE)
+			.select('*')
+			.eq('id', id)
+			.single()
+			.then(function (res) {
+				if (res.error) return null;
+				return fromRow(res.data);
+			});
+	}
+
+	function save(sermon) {
+		return sb.from(TABLE)
+			.insert(toRow(sermon))
+			.select()
+			.single()
+			.then(function (res) {
+				if (res.error) {
+					console.error('Sermons.save', res.error);
+					throw res.error;
+				}
+				return fromRow(res.data);
+			});
+	}
+
+	function update(id, updates) {
+		return sb.from(TABLE)
+			.update(toRow(updates))
+			.eq('id', id)
+			.select()
+			.single()
+			.then(function (res) {
+				if (res.error) {
+					console.error('Sermons.update', res.error);
+					throw res.error;
+				}
+				return fromRow(res.data);
+			});
+	}
+
 	function remove(id) {
-		var sermons = getAll();
-		var filtered = sermons.filter(function (s) { return s.id !== id; });
-		localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
+		return sb.from(TABLE)
+			.delete()
+			.eq('id', id)
+			.then(function (res) {
+				if (res.error) {
+					console.error('Sermons.remove', res.error);
+					throw res.error;
+				}
+			});
 	}
 
 	return {

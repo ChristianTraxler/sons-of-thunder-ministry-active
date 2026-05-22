@@ -1,146 +1,118 @@
 /* =============================================
-   AUTH.JS — Admin Authentication Module
-   localStorage: sot_admin_hash (password hash)
-                 sot_admin_security (security question + answer hash)
-   sessionStorage: sot_admin_session (active session)
+   AUTH.JS — Admin Authentication (Supabase Auth)
+
+   Session persists in localStorage via the
+   Supabase SDK. All writes are gated by the
+   authenticated JWT + Row Level Security.
    ============================================= */
 
 var Auth = (function () {
-	var HASH_KEY = 'sot_admin_hash';
-	var SESSION_KEY = 'sot_admin_session';
-	var SECURITY_KEY = 'sot_admin_security';
+	// Cached session (populated by init/getSession)
+	var _session = null;
 
-	// Seed localStorage from admin-config.js if browser data was cleared
-	(function seedFromConfig() {
-		if (typeof AdminConfig === 'undefined') return;
-		if (!localStorage.getItem(HASH_KEY) && AdminConfig.passwordHash) {
-			localStorage.setItem(HASH_KEY, AdminConfig.passwordHash);
-		}
-		if (!localStorage.getItem(SECURITY_KEY) && AdminConfig.securityQuestion && AdminConfig.securityAnswerHash) {
-			localStorage.setItem(SECURITY_KEY, JSON.stringify({
-				question: AdminConfig.securityQuestion,
-				answerHash: AdminConfig.securityAnswerHash
-			}));
-		}
-	})();
-
-	// Simple hash function (SHA-256 via SubtleCrypto)
-	function hashPassword(password) {
-		var encoder = new TextEncoder();
-		var data = encoder.encode(password);
-		return crypto.subtle.digest('SHA-256', data).then(function (buffer) {
-			var hashArray = Array.from(new Uint8Array(buffer));
-			return hashArray.map(function (b) { return b.toString(16).padStart(2, '0'); }).join('');
+	function getSession() {
+		return sb.auth.getSession().then(function (res) {
+			_session = res.data.session;
+			return _session;
 		});
 	}
 
-	// Check if a password has been set
-	function isFirstVisit() {
-		return !localStorage.getItem(HASH_KEY);
-	}
-
-	// Set password (first visit)
-	function setPassword(password) {
-		return hashPassword(password).then(function (hash) {
-			localStorage.setItem(HASH_KEY, hash);
-			sessionStorage.setItem(SESSION_KEY, 'active');
-		});
-	}
-
-	// Verify password and create session
-	function login(password) {
-		return hashPassword(password).then(function (hash) {
-			var stored = localStorage.getItem(HASH_KEY);
-			if (hash === stored) {
-				sessionStorage.setItem(SESSION_KEY, 'active');
-				return true;
-			}
-			return false;
-		});
-	}
-
-	// Check if session is active
 	function isLoggedIn() {
-		return sessionStorage.getItem(SESSION_KEY) === 'active';
+		return !!_session;
 	}
 
-	// Destroy session
+	function currentUserEmail() {
+		return _session && _session.user ? _session.user.email : null;
+	}
+
+	function login(email, password) {
+		return sb.auth.signInWithPassword({ email: email, password: password })
+			.then(function (res) {
+				if (res.error) return { ok: false, error: res.error.message };
+				_session = res.data.session;
+				return { ok: true };
+			});
+	}
+
 	function logout() {
-		sessionStorage.removeItem(SESSION_KEY);
+		return sb.auth.signOut().then(function () {
+			_session = null;
+		});
 	}
 
-	// Guard: redirect if not logged in
+	// Guards the admin dashboard. Returns a promise that resolves to true
+	// if logged in. Otherwise redirects to the login page and resolves false.
 	function requireAuth() {
-		if (!isLoggedIn()) {
-			window.location.href = 'admin-login.html';
-			return false;
+		return getSession().then(function (session) {
+			if (!session) {
+				window.location.href = 'admin-login.html';
+				return false;
+			}
+			return true;
+		});
+	}
+
+	function changePassword(newPassword) {
+		return sb.auth.updateUser({ password: newPassword })
+			.then(function (res) {
+				if (res.error) return { ok: false, error: res.error.message };
+				return { ok: true };
+			});
+	}
+
+	function sendPasswordReset(email) {
+		return sb.auth.resetPasswordForEmail(email, {
+			redirectTo: window.location.origin + '/admin-login.html'
+		}).then(function (res) {
+			if (res.error) return { ok: false, error: res.error.message };
+			return { ok: true };
+		});
+	}
+
+	function rawDisplayName() {
+		if (!_session || !_session.user) return null;
+		var name = _session.user.user_metadata && _session.user.user_metadata.display_name;
+		return (typeof name === 'string' && name.length > 0) ? name : null;
+	}
+
+	function displayName() {
+		if (!_session || !_session.user) return null;
+		var raw = rawDisplayName();
+		if (raw) return raw;
+		var email = _session.user.email || '';
+		var at = email.indexOf('@');
+		if (at > 0) {
+			var local = email.slice(0, at);
+			return local.charAt(0).toUpperCase() + local.slice(1);
 		}
-		return true;
+		return email || null;
 	}
 
-	// Save security question + hashed answer
-	function setSecurityQuestion(question, answer) {
-		return hashPassword(answer.trim().toLowerCase()).then(function (answerHash) {
-			localStorage.setItem(SECURITY_KEY, JSON.stringify({
-				question: question,
-				answerHash: answerHash
-			}));
-		});
-	}
-
-	// Return stored question text or null
-	function getSecurityQuestion() {
-		var data = localStorage.getItem(SECURITY_KEY);
-		if (!data) return null;
-		return JSON.parse(data).question;
-	}
-
-	// Check if a security question has been set
-	function hasSecurityQuestion() {
-		return !!localStorage.getItem(SECURITY_KEY);
-	}
-
-	// Verify a security answer against stored hash
-	function verifySecurityAnswer(answer) {
-		var data = localStorage.getItem(SECURITY_KEY);
-		if (!data) return Promise.resolve(false);
-		var stored = JSON.parse(data).answerHash;
-		return hashPassword(answer.trim().toLowerCase()).then(function (hash) {
-			return hash === stored;
-		});
-	}
-
-	// Reset password and create session
-	function resetPassword(newPassword) {
-		return hashPassword(newPassword).then(function (hash) {
-			localStorage.setItem(HASH_KEY, hash);
-			sessionStorage.setItem(SESSION_KEY, 'active');
-		});
-	}
-
-	// Return current credential hashes for saving to admin-config.js
-	function getCredentials() {
-		var secData = localStorage.getItem(SECURITY_KEY);
-		var parsed = secData ? JSON.parse(secData) : {};
-		return {
-			passwordHash: localStorage.getItem(HASH_KEY) || '',
-			securityQuestion: parsed.question || '',
-			securityAnswerHash: parsed.answerHash || ''
-		};
+	function updateDisplayName(name) {
+		var trimmed = (name || '').trim();
+		var value = trimmed.length > 0 ? trimmed : null;
+		return sb.auth.updateUser({ data: { display_name: value } })
+			.then(function (res) {
+				if (res.error) return { ok: false, error: res.error.message };
+				// updateUser doesn't rotate tokens; only re-hydrate the user field.
+				if (res.data && res.data.user) {
+					if (_session) _session.user = res.data.user;
+				}
+				return { ok: true };
+			});
 	}
 
 	return {
-		isFirstVisit: isFirstVisit,
-		setPassword: setPassword,
-		login: login,
+		getSession: getSession,
 		isLoggedIn: isLoggedIn,
+		currentUserEmail: currentUserEmail,
+		login: login,
 		logout: logout,
 		requireAuth: requireAuth,
-		setSecurityQuestion: setSecurityQuestion,
-		getSecurityQuestion: getSecurityQuestion,
-		hasSecurityQuestion: hasSecurityQuestion,
-		verifySecurityAnswer: verifySecurityAnswer,
-		resetPassword: resetPassword,
-		getCredentials: getCredentials
+		changePassword: changePassword,
+		sendPasswordReset: sendPasswordReset,
+		rawDisplayName: rawDisplayName,
+		displayName: displayName,
+		updateDisplayName: updateDisplayName
 	};
 })();

@@ -3,8 +3,7 @@
    ============================================= */
 
 var RichEditor = (function () {
-	var editor = null;
-	var toolbar = null;
+	var lastInstance = null;
 
 	var toolbarButtons = [
 		{ cmd: 'bold', icon: '<strong>B</strong>', title: 'Bold' },
@@ -38,13 +37,22 @@ var RichEditor = (function () {
 		{ color: null, label: 'Remove' }
 	];
 
-	function init(wrapperId) {
+	function init(wrapperId, options) {
 		var wrapper = document.getElementById(wrapperId);
-		if (!wrapper) return;
+		if (!wrapper) return null;
 
-		// Build toolbar
-		toolbar = document.createElement('div');
+		var opts = options || {};
+		var placeholder = opts.placeholder || 'Write here...';
+
+		// Build toolbar — LOCAL variable, not module-scoped
+		var toolbar = document.createElement('div');
 		toolbar.className = 'editor-toolbar';
+
+		// Build editor area — LOCAL variable, not module-scoped
+		var editor = document.createElement('div');
+		editor.className = 'editor-content';
+		editor.contentEditable = 'true';
+		editor.setAttribute('data-placeholder', placeholder);
 
 		toolbarButtons.forEach(function (btn) {
 			if (btn.divider) {
@@ -55,7 +63,7 @@ var RichEditor = (function () {
 			}
 
 			if (btn.highlight) {
-				buildHighlightPicker(toolbar);
+				buildHighlightPicker(toolbar, editor);
 				return;
 			}
 
@@ -69,27 +77,40 @@ var RichEditor = (function () {
 				e.preventDefault(); // Prevent losing focus from editor
 			});
 			button.addEventListener('click', function () {
-				execCommand(btn.cmd, btn.value || null);
-				updateActiveStates();
+				execCommand(editor, btn.cmd, btn.value || null);
+				updateActiveStates(toolbar);
 			});
 			toolbar.appendChild(button);
 		});
 
-		// Build editor area
-		editor = document.createElement('div');
-		editor.className = 'editor-content';
-		editor.contentEditable = 'true';
-		editor.setAttribute('data-placeholder', 'Write your sermon content here...');
-
-		editor.addEventListener('input', updateActiveStates);
-		editor.addEventListener('keyup', updateActiveStates);
-		editor.addEventListener('mouseup', updateActiveStates);
+		editor.addEventListener('input', function () { updateActiveStates(toolbar); });
+		editor.addEventListener('keyup', function () { updateActiveStates(toolbar); });
+		editor.addEventListener('mouseup', function () { updateActiveStates(toolbar); });
 
 		wrapper.appendChild(toolbar);
 		wrapper.appendChild(editor);
+
+		// Build the instance object — each method closes over THIS editor only
+		var instance = {
+			getContent: function () {
+				return editor ? editor.innerHTML : '';
+			},
+			setContent: function (html) {
+				if (editor) editor.innerHTML = html || '';
+			},
+			clear: function () {
+				if (editor) editor.innerHTML = '';
+			},
+			focus: function () {
+				if (editor) editor.focus();
+			}
+		};
+
+		lastInstance = instance;
+		return instance;
 	}
 
-	function buildHighlightPicker(parentEl) {
+	function buildHighlightPicker(parentEl, editor) {
 		var container = document.createElement('div');
 		container.className = 'highlight-picker';
 
@@ -148,7 +169,7 @@ var RichEditor = (function () {
 		});
 	}
 
-	function execCommand(cmd, value) {
+	function execCommand(editor, cmd, value) {
 		if (cmd === 'formatBlock' && value) {
 			// Toggle blockquote off if already active
 			var block = document.queryCommandValue('formatBlock');
@@ -163,7 +184,7 @@ var RichEditor = (function () {
 		editor.focus();
 	}
 
-	function updateActiveStates() {
+	function updateActiveStates(toolbar) {
 		if (!toolbar) return;
 		var buttons = toolbar.querySelectorAll('button[data-cmd]');
 		buttons.forEach(function (btn) {
@@ -180,17 +201,11 @@ var RichEditor = (function () {
 		});
 	}
 
-	function getContent() {
-		return editor ? editor.innerHTML : '';
-	}
-
-	function setContent(html) {
-		if (editor) editor.innerHTML = html || '';
-	}
-
-	function clear() {
-		if (editor) editor.innerHTML = '';
-	}
+	// Module-level fallbacks — delegate to the most-recently-created instance.
+	// Preferred usage: var ed = RichEditor.init('id', { placeholder: '...' }); ed.getContent();
+	function getContent() { return lastInstance ? lastInstance.getContent() : ''; }
+	function setContent(html) { if (lastInstance) lastInstance.setContent(html); }
+	function clear() { if (lastInstance) lastInstance.clear(); }
 
 	return {
 		init: init,

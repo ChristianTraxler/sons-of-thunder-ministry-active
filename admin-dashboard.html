@@ -16,14 +16,20 @@
 			<!-- Top bar -->
 			<div class="admin-topbar">
 				<a href="index.html" class="nav-logo">STM</a>
+				<div class="admin-tabs" role="tablist">
+					<button class="admin-tab active" data-tab="sermons" role="tab">Sermons</button>
+					<button class="admin-tab" data-tab="content" role="tab">Content</button>
+					<button class="admin-tab" data-tab="settings" role="tab">Settings</button>
+				</div>
 				<div class="admin-topbar-right">
-					<a href="index.html" class="btn-logout">View Site</a>
+					<span class="admin-greeting" id="adminGreeting" aria-live="polite"></span>
+					<a href="index.html" class="btn-logout" target="_blank" rel="noopener noreferrer">View Site</a>
 					<button class="btn-logout" id="logoutBtn">Logout</button>
 				</div>
 			</div>
 
-			<!-- Dashboard content -->
-			<div class="dashboard-body">
+			<!-- SERMONS TAB -->
+			<div class="dashboard-body tab-panel active" id="tab-sermons">
 				<!-- Left: Sermon form -->
 				<div class="sermon-form-panel">
 					<h2 id="formTitle">New Sermon</h2>
@@ -63,8 +69,249 @@
 				<div class="sermons-sidebar">
 					<h2>Published Sermons</h2>
 					<div class="sidebar-sermon-list" id="sidebarSermons">
-						<p class="sidebar-empty">No sermons published yet.</p>
+						<p class="sidebar-empty">Loading…</p>
 					</div>
+				</div>
+			</div>
+
+			<!-- CONTENT TAB -->
+			<div class="settings-body tab-panel" id="tab-content">
+				<div class="settings-stack">
+
+					<!-- Homepage Content (disabled for now)
+					<section class="settings-section">
+						<h2>Homepage Content</h2>
+						<div class="form-group">
+							<label for="setHeroTitle">Hero Title</label>
+							<input type="text" id="setHeroTitle" data-setting="hero_title">
+						</div>
+						<div class="form-group">
+							<label for="setHeroSubtitle">Hero Tagline</label>
+							<input type="text" id="setHeroSubtitle" data-setting="hero_subtitle">
+						</div>
+						<div class="form-group">
+							<label for="setMissionText">Mission Statement</label>
+							<textarea id="setMissionText" data-setting="mission_text" rows="3"></textarea>
+						</div>
+						<div class="form-group">
+							<label for="setAboutText">About Welcome Text</label>
+							<textarea id="setAboutText" data-setting="about_text" rows="4"></textarea>
+						</div>
+						<button class="btn-save-section" data-section="content">Save Homepage Content</button>
+					</section>
+					-->
+
+
+					<!-- Welcome Message Scripture -->
+					<section class="settings-section">
+						<h2>Welcome Message Scripture</h2>
+						<div class="form-group">
+							<label for="setVerseText">Scripture Quote</label>
+							<textarea id="setVerseText" data-setting="verse_text" rows="3" placeholder="&ldquo;For I am not ashamed of the gospel of Christ&hellip;&rdquo;"></textarea>
+						</div>
+						<div class="form-group">
+							<label for="setVerseReference">Book, Chapter &amp; Verse</label>
+							<input type="text" id="setVerseReference" data-setting="verse_reference" placeholder="Romans 1:16">
+						</div>
+						<p class="settings-hint">Appears in the &ldquo;Welcome Message&rdquo; section on the homepage.</p>
+						<button class="btn-save-section" data-section="verse">Save Scripture</button>
+					</section>
+
+					<!-- Calendar of Events -->
+					<section class="settings-section">
+						<div class="events-admin-header">
+							<h2>Calendar of Events</h2>
+							<button class="btn-publish" id="addEventBtn" type="button">Add Event</button>
+						</div>
+						<div class="events-calendar" id="eventsCalendar">
+							<div class="events-calendar-header">
+								<button class="calendar-nav" id="calPrevBtn" type="button" aria-label="Previous month">&#8249;</button>
+								<div class="calendar-title-wrap">
+									<div class="calendar-title" id="calTitle">—</div>
+									<button class="calendar-today-btn" id="calTodayBtn" type="button">Today</button>
+								</div>
+								<button class="calendar-nav" id="calNextBtn" type="button" aria-label="Next month">&#8250;</button>
+							</div>
+							<div class="events-calendar-weekdays">
+								<span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+							</div>
+							<div class="events-calendar-grid" id="calGrid"></div>
+						</div>
+						<div class="events-admin-list" id="eventsAdminList">
+							<p class="sidebar-empty">Loading…</p>
+						</div>
+					</section>
+
+				</div>
+			</div>
+
+			<!-- SETTINGS TAB -->
+			<div class="settings-body tab-panel" id="tab-settings">
+				<div class="settings-stack">
+
+					<!-- Account -->
+					<section class="settings-section">
+						<h2>Account</h2>
+						<div class="form-group">
+							<label>Signed in as</label>
+							<div class="settings-readonly" id="accountEmail">—</div>
+						</div>
+						<div class="form-group">
+							<label for="newPasswordInput">Change Password</label>
+							<input type="password" id="newPasswordInput" autocomplete="new-password" placeholder="New password (min 8 characters)">
+						</div>
+						<button class="btn-save-section" data-section="account">Update Password</button>
+					</section>
+
+					<!-- Admin Password Recovery -->
+					<section class="settings-section">
+						<h2>Admin Password Recovery</h2>
+						<div class="form-group">
+							<label for="recoveryEmailInput">Admin email</label>
+							<input type="email" id="recoveryEmailInput" autocomplete="off" placeholder="admin@example.org">
+						</div>
+						<p class="settings-hint">Sends a Supabase password reset email to the address above. Use this if another admin is locked out.</p>
+						<button class="btn-save-section" data-section="recovery">Send Reset Link</button>
+					</section>
+
+					<!-- Display Name -->
+					<section class="settings-section">
+						<h2>Display Name</h2>
+						<div class="form-group">
+							<label for="displayNameInput">Your name</label>
+							<input type="text" id="displayNameInput" autocomplete="name" placeholder="e.g. Pastor Hugh">
+						</div>
+						<p class="settings-hint">Shown in the top bar when you're signed in. Leave blank to display your email instead.</p>
+						<button class="btn-save-section" data-section="displayname">Save Display Name</button>
+					</section>
+
+					<!-- Contact Info -->
+					<section class="settings-section">
+						<h2>Contact Info</h2>
+						<div class="form-group">
+							<label for="setContactFirstName">First name</label>
+							<input type="text" id="setContactFirstName" data-setting="contact_first_name" autocomplete="given-name" autocapitalize="words" placeholder="Hugh">
+						</div>
+						<div class="form-group">
+							<label for="setContactLastName">Last name</label>
+							<input type="text" id="setContactLastName" data-setting="contact_last_name" autocomplete="family-name" autocapitalize="words" placeholder="Compton">
+						</div>
+						<div class="form-group">
+							<label for="setContactEmail">Email</label>
+							<input type="email" id="setContactEmail" data-setting="contact_email" placeholder="info@example.org">
+						</div>
+						<div class="form-group">
+							<label for="setContactPhone">Phone</label>
+							<input type="tel" id="setContactPhone" data-setting="contact_phone" placeholder="(555) 555-5555">
+						</div>
+						<div class="form-group">
+							<label for="setContactAddress">Address</label>
+							<input type="text" id="setContactAddress" data-setting="contact_address" placeholder="123 Main St, Mooresville, NC">
+						</div>
+						<p class="settings-hint">Leave any field blank to hide it from the site.</p>
+						<button class="btn-save-section" data-section="contact">Save Contact Info</button>
+					</section>
+
+					<!-- Social Links -->
+					<section class="settings-section">
+						<h2>Social Links</h2>
+						<div class="form-group">
+							<label for="setFacebook">Facebook URL</label>
+							<input type="url" id="setFacebook" data-setting="facebook_url" placeholder="https://facebook.com/…">
+						</div>
+						<div class="form-group">
+							<label for="setInstagram">Instagram URL</label>
+							<input type="url" id="setInstagram" data-setting="instagram_url" placeholder="https://instagram.com/…">
+						</div>
+						<div class="form-group">
+							<label for="setYoutube">YouTube URL</label>
+							<input type="url" id="setYoutube" data-setting="youtube_url" placeholder="https://youtube.com/@…">
+						</div>
+						<p class="settings-hint">Leave any field blank to hide that icon from the site.</p>
+						<button class="btn-save-section" data-section="social">Save Social Links</button>
+					</section>
+
+					<!-- Donation Button -->
+					<section class="settings-section">
+						<h2>Donation Button</h2>
+						<div class="form-group toggle-row">
+							<label for="setDonationEnabled" id="setDonationEnabledLabel">Disabled</label>
+							<label class="toggle-switch">
+								<input type="checkbox" id="setDonationEnabled" data-setting="donation_enabled">
+								<span class="toggle-slider"></span>
+							</label>
+						</div>
+						<div class="form-group">
+							<label for="setDonationUrl">Donation URL or mailto:</label>
+							<input type="text" id="setDonationUrl" data-setting="donation_url" placeholder="https://… or mailto:info@example.org">
+						</div>
+						<p class="settings-hint">When disabled, the homepage button does nothing.</p>
+						<button class="btn-save-section" data-section="donation">Save Donation Settings</button>
+					</section>
+
+				</div>
+			</div>
+		</div>
+
+		<!-- Event add/edit modal -->
+		<div class="modal-overlay" id="eventModal">
+			<div class="modal-card modal-card-form">
+				<h3 id="eventModalTitle">Add Event</h3>
+
+				<div class="form-row">
+					<div class="form-group">
+						<label for="evTitle">Title</label>
+						<input type="text" id="evTitle" placeholder="Event name">
+					</div>
+					<div class="form-group">
+						<label for="evDate">Date</label>
+						<input type="date" id="evDate">
+					</div>
+				</div>
+
+				<div class="form-group">
+						<label>Category</label>
+						<div class="segmented" id="evCategoryGroup">
+							<label class="segmented-option">
+								<input type="radio" name="evCategory" value="church" checked>
+								<span>Church</span>
+							</label>
+							<label class="segmented-option">
+								<input type="radio" name="evCategory" value="track">
+								<span>Track</span>
+							</label>
+						</div>
+					</div>
+
+				<div class="form-row">
+					<div class="form-group">
+						<label for="evStart">Start Time</label>
+						<input type="time" id="evStart">
+					</div>
+					<div class="form-group">
+						<label for="evEnd">End Time</label>
+						<input type="time" id="evEnd">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="evLocation">Location</label>
+					<input type="text" id="evLocation" placeholder="Where is it happening?">
+				</div>
+
+				<div class="form-group">
+					<label>Description</label>
+					<div class="editor-wrapper" id="evEditorWrapper"></div>
+				</div>
+
+				<div class="form-group">
+					<label for="evLink">Link (optional)</label>
+					<input type="url" id="evLink" placeholder="https://…">
+				</div>
+
+				<div class="modal-actions">
+					<button class="btn-modal-cancel" id="evCancelBtn" type="button">Cancel</button>
+					<button class="btn-modal-delete btn-modal-save" id="evSaveBtn" type="button">Save Event</button>
 				</div>
 			</div>
 		</div>
@@ -84,182 +331,417 @@
 		<!-- Toast notification -->
 		<div class="toast" id="toast"></div>
 
-		<script src="js/admin-config.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+		<script src="js/supabase-client.js"></script>
 		<script src="js/auth.js"></script>
 		<script src="js/sermons.js"></script>
+		<script src="js/settings.js"></script>
 		<script src="js/rich-editor.js"></script>
+		<script src="js/events.js"></script>
+		<script src="js/events-admin.js"></script>
 		<script>
 		(function () {
-			// Guard — require login
-			if (!Auth.requireAuth()) return;
+			// Guard — wait for session before showing UI
+			Auth.requireAuth().then(function (ok) {
+				if (!ok) return;
+				initDashboard();
+			});
 
-			// Init editor
-			RichEditor.init('editorWrapper');
+			function initDashboard() {
+				// Init editor
+				var sermonEditor = RichEditor.init('editorWrapper', { placeholder: 'Write your sermon content here...' });
 
-			// Set today's date as default
-			var dateInput = document.getElementById('sermonDate');
-			dateInput.value = new Date().toISOString().split('T')[0];
-
-			// DOM references
-			var titleInput = document.getElementById('sermonTitle');
-			var authorInput = document.getElementById('sermonAuthor');
-			var youtubeInput = document.getElementById('sermonYoutube');
-			var publishBtn = document.getElementById('publishBtn');
-			var cancelEditBtn = document.getElementById('cancelEditBtn');
-			var formTitle = document.getElementById('formTitle');
-			var sidebarEl = document.getElementById('sidebarSermons');
-			var deleteModal = document.getElementById('deleteModal');
-			var confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
-			var cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
-			var toastEl = document.getElementById('toast');
-
-			var editingId = null;
-			var deletingId = null;
-
-			// Show toast message
-			function showToast(msg) {
-				toastEl.textContent = msg;
-				toastEl.classList.add('visible');
-				setTimeout(function () {
-					toastEl.classList.remove('visible');
-				}, 2500);
-			}
-
-			// Render sidebar
-			function renderSidebar() {
-				var sermons = Sermons.getAll();
-				if (sermons.length === 0) {
-					sidebarEl.innerHTML = '<p class="sidebar-empty">No sermons published yet.</p>';
-					return;
-				}
-				var html = '';
-				sermons.forEach(function (s) {
-					var dateStr = s.date ? new Date(s.date + 'T00:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '';
-					html += '<div class="sidebar-sermon-item">'
-						+ '<h4>' + escapeHtml(s.title) + '</h4>'
-						+ '<div class="sidebar-meta">' + escapeHtml(s.author) + (dateStr ? ' &middot; ' + dateStr : '') + '</div>'
-						+ '<div class="sidebar-sermon-actions">'
-						+ '<button class="btn-edit-sermon" data-id="' + s.id + '">Edit</button>'
-						+ '<button class="btn-delete-sermon" data-id="' + s.id + '">Delete</button>'
-						+ '</div></div>';
-				});
-				sidebarEl.innerHTML = html;
-
-				// Bind edit buttons
-				sidebarEl.querySelectorAll('.btn-edit-sermon').forEach(function (btn) {
-					btn.addEventListener('click', function () {
-						startEdit(btn.getAttribute('data-id'));
-					});
-				});
-				// Bind delete buttons
-				sidebarEl.querySelectorAll('.btn-delete-sermon').forEach(function (btn) {
-					btn.addEventListener('click', function () {
-						deletingId = btn.getAttribute('data-id');
-						var sermon = Sermons.getById(deletingId);
-						document.getElementById('deleteModalText').textContent = 'Are you sure you want to delete "' + sermon.title + '"? This cannot be undone.';
-						deleteModal.classList.add('active');
-					});
-				});
-			}
-
-			// Start editing a sermon
-			function startEdit(id) {
-				var sermon = Sermons.getById(id);
-				if (!sermon) return;
-				editingId = id;
-				titleInput.value = sermon.title || '';
-				authorInput.value = sermon.author || '';
-				youtubeInput.value = sermon.youtubeUrl || '';
-				dateInput.value = sermon.date || '';
-				RichEditor.setContent(sermon.content || '');
-				formTitle.textContent = 'Edit Sermon';
-				publishBtn.textContent = 'Update Sermon';
-				cancelEditBtn.style.display = 'block';
-				window.scrollTo({ top: 0, behavior: 'smooth' });
-			}
-
-			// Cancel edit
-			function cancelEdit() {
-				editingId = null;
-				titleInput.value = '';
-				authorInput.value = 'Pastor Hugh Compton';
-				youtubeInput.value = '';
+				// Default date = today
+				var dateInput = document.getElementById('sermonDate');
 				dateInput.value = new Date().toISOString().split('T')[0];
-				RichEditor.clear();
-				formTitle.textContent = 'New Sermon';
-				publishBtn.textContent = 'Publish Sermon';
-				cancelEditBtn.style.display = 'none';
-			}
 
-			// Publish / Update
-			publishBtn.addEventListener('click', function () {
-				var title = titleInput.value.trim();
-				if (!title) {
-					titleInput.focus();
-					return;
+				// DOM refs — sermons
+				var titleInput = document.getElementById('sermonTitle');
+				var authorInput = document.getElementById('sermonAuthor');
+				var youtubeInput = document.getElementById('sermonYoutube');
+				var publishBtn = document.getElementById('publishBtn');
+				var cancelEditBtn = document.getElementById('cancelEditBtn');
+				var formTitle = document.getElementById('formTitle');
+				var sidebarEl = document.getElementById('sidebarSermons');
+				var deleteModal = document.getElementById('deleteModal');
+				var confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+				var cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+				var toastEl = document.getElementById('toast');
+
+				var editingId = null;
+
+				function showToast(msg, kind) {
+					toastEl.textContent = msg;
+					toastEl.className = 'toast visible' + (kind === 'error' ? ' toast-error' : '');
+					setTimeout(function () {
+						toastEl.classList.remove('visible');
+					}, 2500);
 				}
 
-				var data = {
-					title: title,
-					author: authorInput.value.trim(),
-					youtubeUrl: youtubeInput.value.trim(),
-					date: dateInput.value,
-					content: RichEditor.getContent()
+				// ---- Shared delete modal ----
+				var pendingDeleteConfirm = null;
+				function openDeleteModal(opts) {
+					document.querySelector('#deleteModal h3').textContent = opts.title || 'Delete';
+					document.getElementById('deleteModalText').textContent = opts.message || 'Are you sure?';
+					pendingDeleteConfirm = opts.onConfirm || null;
+					deleteModal.classList.add('active');
+				}
+				function closeDeleteModal() {
+					pendingDeleteConfirm = null;
+					deleteModal.classList.remove('active');
+				}
+
+				// ---- Tab switcher ----
+				document.querySelectorAll('.admin-tab').forEach(function (btn) {
+					btn.addEventListener('click', function () {
+						var tab = btn.getAttribute('data-tab');
+						document.querySelectorAll('.admin-tab').forEach(function (b) {
+							b.classList.toggle('active', b === btn);
+						});
+						document.querySelectorAll('.tab-panel').forEach(function (p) {
+							p.classList.toggle('active', p.id === 'tab-' + tab);
+						});
+					});
+				});
+
+				// ---- Sermons ----
+				function renderSidebar() {
+					Sermons.getAll().then(function (sermons) {
+						if (sermons.length === 0) {
+							sidebarEl.innerHTML = '<p class="sidebar-empty">No sermons published yet.</p>';
+							return;
+						}
+						var html = '';
+						sermons.forEach(function (s) {
+							var dateStr = s.date ? new Date(s.date + 'T00:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '';
+							html += '<div class="sidebar-sermon-item">'
+								+ '<h4>' + escapeHtml(s.title) + '</h4>'
+								+ '<div class="sidebar-meta">' + escapeHtml(s.author) + (dateStr ? ' &middot; ' + dateStr : '') + '</div>'
+								+ '<div class="sidebar-sermon-actions">'
+								+ '<button class="btn-edit-sermon" data-id="' + s.id + '">Edit</button>'
+								+ '<button class="btn-delete-sermon" data-id="' + s.id + '">Delete</button>'
+								+ '</div></div>';
+						});
+						sidebarEl.innerHTML = html;
+
+						sidebarEl.querySelectorAll('.btn-edit-sermon').forEach(function (btn) {
+							btn.addEventListener('click', function () {
+								startEdit(btn.getAttribute('data-id'));
+							});
+						});
+						sidebarEl.querySelectorAll('.btn-delete-sermon').forEach(function (btn) {
+							btn.addEventListener('click', function () {
+								var id = btn.getAttribute('data-id');
+								Sermons.getById(id).then(function (sermon) {
+									var title = sermon ? sermon.title : 'this sermon';
+									openDeleteModal({
+										title: 'Delete Sermon',
+										message: 'Are you sure you want to delete "' + title + '"? This cannot be undone.',
+										onConfirm: function () {
+											Sermons.remove(id).then(function () {
+												if (editingId === id) cancelEdit();
+												showToast('Sermon deleted');
+												renderSidebar();
+											}).catch(function (err) {
+												showToast(err.message || 'Delete failed', 'error');
+											});
+										}
+									});
+								});
+							});
+						});
+					});
+				}
+
+				function startEdit(id) {
+					Sermons.getById(id).then(function (sermon) {
+						if (!sermon) return;
+						editingId = id;
+						titleInput.value = sermon.title || '';
+						authorInput.value = sermon.author || '';
+						youtubeInput.value = sermon.youtubeUrl || '';
+						dateInput.value = sermon.date || '';
+						sermonEditor.setContent(sermon.content || '');
+						formTitle.textContent = 'Edit Sermon';
+						publishBtn.textContent = 'Update Sermon';
+						cancelEditBtn.style.display = 'block';
+						window.scrollTo({ top: 0, behavior: 'smooth' });
+					});
+				}
+
+				function cancelEdit() {
+					editingId = null;
+					titleInput.value = '';
+					authorInput.value = 'Pastor Hugh Compton';
+					youtubeInput.value = '';
+					dateInput.value = new Date().toISOString().split('T')[0];
+					sermonEditor.clear();
+					formTitle.textContent = 'New Sermon';
+					publishBtn.textContent = 'Publish Sermon';
+					cancelEditBtn.style.display = 'none';
+				}
+
+				publishBtn.addEventListener('click', function () {
+					var title = titleInput.value.trim();
+					if (!title) {
+						titleInput.focus();
+						return;
+					}
+					publishBtn.disabled = true;
+
+					var data = {
+						title: title,
+						author: authorInput.value.trim(),
+						youtubeUrl: youtubeInput.value.trim(),
+						date: dateInput.value,
+						content: sermonEditor.getContent()
+					};
+
+					var op = editingId
+						? Sermons.update(editingId, data).then(function () { showToast('Sermon updated'); })
+						: Sermons.save(data).then(function () { showToast('Sermon published'); });
+
+					op.then(function () {
+						cancelEdit();
+						renderSidebar();
+					}).catch(function (err) {
+						showToast(err.message || 'Save failed', 'error');
+					}).then(function () {
+						publishBtn.disabled = false;
+					});
+				});
+
+				cancelEditBtn.addEventListener('click', cancelEdit);
+
+				confirmDeleteBtn.addEventListener('click', function () {
+					if (pendingDeleteConfirm) pendingDeleteConfirm();
+					closeDeleteModal();
+				});
+				cancelDeleteBtn.addEventListener('click', closeDeleteModal);
+				deleteModal.addEventListener('click', function (e) {
+					if (e.target === deleteModal) closeDeleteModal();
+				});
+
+				document.getElementById('logoutBtn').addEventListener('click', function () {
+					Auth.logout().then(function () {
+						window.location.href = 'admin-login.html';
+					});
+				});
+
+				// ---- Settings ----
+				var accountEmailEl = document.getElementById('accountEmail');
+				var adminGreetingEl = document.getElementById('adminGreeting');
+				var displayNameInput = document.getElementById('displayNameInput');
+
+				function renderAccountIdentity() {
+					var email = Auth.currentUserEmail() || '';
+					var raw = Auth.rawDisplayName();
+					accountEmailEl.textContent = raw ? (raw + ' (' + email + ')') : (email || '—');
+					var greet = Auth.displayName();
+					adminGreetingEl.textContent = greet ? ('Hi, ' + greet) : '';
+					displayNameInput.value = raw || '';
+				}
+				renderAccountIdentity();
+
+				var donationToggle = document.getElementById('setDonationEnabled');
+				var donationToggleLabel = document.getElementById('setDonationEnabledLabel');
+				function syncDonationToggleLabel() {
+					if (!donationToggle || !donationToggleLabel) return;
+					donationToggleLabel.textContent = donationToggle.checked ? 'Enabled' : 'Disabled';
+				}
+				if (donationToggle) {
+					donationToggle.addEventListener('change', syncDonationToggleLabel);
+				}
+
+				// Load settings into all [data-setting] inputs
+				function loadSettingsIntoForm() {
+					Settings.get().then(function (row) {
+						if (!row) return;
+						document.querySelectorAll('[data-setting]').forEach(function (el) {
+							var key = el.getAttribute('data-setting');
+							var val = row[key];
+							if (el.type === 'checkbox') {
+								el.checked = !!val;
+							} else {
+								el.value = val == null ? '' : val;
+							}
+						});
+						syncDonationToggleLabel();
+					});
+				}
+				loadSettingsIntoForm();
+
+				function capFirstLetter(el) {
+					if (!el) return;
+					el.addEventListener('input', function () {
+						var v = el.value;
+						if (!v) return;
+						var upper = v.charAt(0).toUpperCase();
+						if (v.charAt(0) === upper) return;
+						var start = el.selectionStart;
+						var end = el.selectionEnd;
+						el.value = upper + v.slice(1);
+						try { el.setSelectionRange(start, end); } catch (e) {}
+					});
+				}
+
+				function capSentences(el) {
+					if (!el) return;
+					el.addEventListener('input', function () {
+						var v = el.value;
+						if (!v) return;
+						var out = v.replace(/(^|\.[ \u00a0])([a-z])/g, function (m, pre, ch) {
+							return pre + ch.toUpperCase();
+						});
+						if (out === v) return;
+						var start = el.selectionStart;
+						var end = el.selectionEnd;
+						el.value = out;
+						try { el.setSelectionRange(start, end); } catch (e) {}
+					});
+				}
+
+				function capSentencesContentEditable(ed) {
+					if (!ed) return;
+					ed.addEventListener('beforeinput', function (e) {
+						if (e.inputType !== 'insertText') return;
+						var data = e.data;
+						if (!data || data.length !== 1) return;
+						var upper = data.toUpperCase();
+						if (data === upper) return;
+						var sel = window.getSelection();
+						if (!sel.rangeCount) return;
+						var range = sel.getRangeAt(0);
+						if (!range.collapsed) return;
+						if (!ed.contains(range.endContainer)) return;
+						var pre = document.createRange();
+						pre.selectNodeContents(ed);
+						pre.setEnd(range.endContainer, range.endOffset);
+						var textBefore = pre.toString();
+						if (textBefore.length === 0 || /\.[\s\u00a0]$/.test(textBefore)) {
+							e.preventDefault();
+							document.execCommand('insertText', false, upper);
+						}
+					});
+				}
+
+				capFirstLetter(document.getElementById('setVerseReference'));
+				capSentences(document.getElementById('setVerseText'));
+				capFirstLetter(document.getElementById('sermonTitle'));
+				capFirstLetter(document.getElementById('setContactFirstName'));
+				capFirstLetter(document.getElementById('setContactLastName'));
+				capSentencesContentEditable(document.querySelector('#editorWrapper .editor-content'));
+
+				// Map section → fields
+				var SECTIONS = {
+					content:  ['hero_title', 'hero_subtitle', 'mission_text', 'about_text'],
+					verse:    ['verse_text', 'verse_reference'],
+					contact:  ['contact_first_name', 'contact_last_name', 'contact_email', 'contact_phone', 'contact_address'],
+					social:   ['facebook_url', 'instagram_url', 'youtube_url'],
+					donation: ['donation_enabled', 'donation_url']
 				};
 
-				if (editingId) {
-					Sermons.update(editingId, data);
-					showToast('Sermon updated');
-				} else {
-					Sermons.save(data);
-					showToast('Sermon published');
+				function collectSection(name) {
+					var patch = {};
+					SECTIONS[name].forEach(function (key) {
+						var el = document.querySelector('[data-setting="' + key + '"]');
+						if (!el) return;
+						if (el.type === 'checkbox') {
+							patch[key] = el.checked;
+						} else {
+							var v = el.value.trim();
+							patch[key] = v === '' ? null : v;
+						}
+					});
+					return patch;
 				}
-				cancelEdit();
+
+				document.querySelectorAll('.btn-save-section').forEach(function (btn) {
+					btn.addEventListener('click', function () {
+						var section = btn.getAttribute('data-section');
+						btn.disabled = true;
+						var originalText = btn.textContent;
+						btn.textContent = 'Saving…';
+
+						var done = function () {
+							btn.disabled = false;
+							btn.textContent = originalText;
+						};
+
+						if (section === 'account') {
+							var pwInput = document.getElementById('newPasswordInput');
+							var pw = pwInput.value;
+							if (pw.length < 8) {
+								showToast('Password must be at least 8 characters', 'error');
+								done();
+								return;
+							}
+							Auth.changePassword(pw).then(function (res) {
+								if (res.ok) {
+									pwInput.value = '';
+									showToast('Password updated');
+								} else {
+									showToast(res.error || 'Update failed', 'error');
+								}
+								done();
+							});
+							return;
+						}
+
+						if (section === 'recovery') {
+							var recoveryInput = document.getElementById('recoveryEmailInput');
+							var email = recoveryInput.value.trim();
+							if (!email || email.indexOf('@') === -1) {
+								showToast('Please enter a valid email address', 'error');
+								done();
+								return;
+							}
+							Auth.sendPasswordReset(email).then(function (res) {
+								if (res.ok) {
+									showToast('Reset link sent');
+								} else {
+									showToast(res.error || 'Could not send reset email', 'error');
+								}
+								done();
+							});
+							return;
+						}
+
+						if (section === 'displayname') {
+							var displayNameInput = document.getElementById('displayNameInput');
+							Auth.updateDisplayName(displayNameInput.value).then(function (res) {
+								if (res.ok) {
+									renderAccountIdentity();
+									showToast('Display name saved');
+								} else {
+									showToast(res.error || 'Could not save display name', 'error');
+								}
+								done();
+							});
+							return;
+						}
+
+						Settings.update(collectSection(section))
+							.then(function () { showToast('Saved'); })
+							.catch(function (err) { showToast(err.message || 'Save failed', 'error'); })
+							.then(done);
+					});
+				});
+
+				// ---- Util ----
+				function escapeHtml(str) {
+					var div = document.createElement('div');
+					div.textContent = str || '';
+					return div.innerHTML;
+				}
+
+				EventsAdmin.init({
+					showToast: showToast,
+					openDeleteModal: openDeleteModal
+				});
+
 				renderSidebar();
-			});
-
-			cancelEditBtn.addEventListener('click', cancelEdit);
-
-			// Confirm delete
-			confirmDeleteBtn.addEventListener('click', function () {
-				if (deletingId) {
-					Sermons.remove(deletingId);
-					if (editingId === deletingId) cancelEdit();
-					deletingId = null;
-					deleteModal.classList.remove('active');
-					renderSidebar();
-					showToast('Sermon deleted');
-				}
-			});
-
-			cancelDeleteBtn.addEventListener('click', function () {
-				deletingId = null;
-				deleteModal.classList.remove('active');
-			});
-
-			// Close modal on overlay click
-			deleteModal.addEventListener('click', function (e) {
-				if (e.target === deleteModal) {
-					deletingId = null;
-					deleteModal.classList.remove('active');
-				}
-			});
-
-			// Logout
-			document.getElementById('logoutBtn').addEventListener('click', function () {
-				Auth.logout();
-				window.location.href = 'admin-login.html';
-			});
-
-			// Escape HTML for safe rendering
-			function escapeHtml(str) {
-				var div = document.createElement('div');
-				div.textContent = str || '';
-				return div.innerHTML;
 			}
-
-			// Initial render
-			renderSidebar();
 		})();
 		</script>
 	</body>

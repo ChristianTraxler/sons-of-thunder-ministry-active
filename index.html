@@ -10,6 +10,7 @@
 		<link rel="stylesheet" href="css/styles.css">
 		<link rel="stylesheet" href="css/responsiveness.css">
 		<link rel="stylesheet" href="css/admin.css">
+		<link rel="stylesheet" href="css/events.css">
 	</head>
 
 	<body>
@@ -19,6 +20,7 @@
 				<li><a href="#about" onclick="closeMenu()">About</a></li>
 				<li><a href="#ministries" onclick="closeMenu()">Ministries</a></li>
 				<li><a href="#message" onclick="closeMenu()">Message</a></li>
+				<li><a href="events.html" onclick="closeMenu()">Events</a></li>
 				<li><a href="#board" onclick="closeMenu()">Board</a></li>
 				<li><a href="#sermons" onclick="closeMenu()">Sermons</a></li>
 				<li class="nav-give-item"><a href="#donate" onclick="closeMenu()" class="nav-donate nav-donate-menu">Give</a></li>
@@ -49,7 +51,7 @@
 				<div class="hero-badge">Mooresville, NC &nbsp;&#183;&nbsp; Est. 501(c)(3)</div>
 				<h1 class="hero-title">Sons of<br><span>Thunder</span></h1>
 				<div class="hero-divider"><span style="color:var(--gold); font-size:1.2rem;">&#10022;</span></div>
-				<p class="hero-tagline">"Lifting up the name of Jesus one lap at a time"</p>
+				<p class="hero-tagline" data-setting="hero_subtitle">"Lifting up the name of Jesus one lap at a time"</p>
 				<div class="hero-ctas">
 					<a href="#about" class="btn-primary">Explore Our Mission</a>
 					<a href="#donate" class="btn-secondary">Support Us</a>
@@ -67,13 +69,13 @@
 					<div class="about-text">
 						<div class="section-label reveal">Our Ministry</div>
 						<h2 class="section-title reveal delay-1">Reaching Out &amp; Serving Others in Christ's Name</h2>
-						<p class="reveal delay-2">Welcome to Sons of Thunder Ministry! If you're a first-time visitor, we welcome you in the name of Jesus. Our ministry reaches communities through motorsport chaplaincy, hospital outreach, and weekly scripture-based messages.</p>
+						<p class="reveal delay-2" data-setting="about_text">Welcome to Sons of Thunder Ministry! If you're a first-time visitor, we welcome you in the name of Jesus. Our ministry reaches communities through motorsport chaplaincy, hospital outreach, and weekly scripture-based messages.</p>
 						<p class="reveal delay-3">Each week, Pastor Hugh Compton &#8212; known as &#8220;Preacherbuddy&#8221; &#8212; provides messages on YouTube. Tune in Wednesdays at <a href="https://youtube.com/@hughcompton4575" style="color:var(--gold)">@hughcompton4575</a>, and catch our broadcast on WHIP Radio 1350 at 10:00 AM.</p>
 						<p class="reveal delay-4">We also offer <em>Our Daily Bread</em> devotionals free of charge to anyone who requests one. Reach out and we'll make sure you receive it monthly.</p>
 					</div>
 					<div class="reveal delay-3">
 						<div class="mission-card">
-							<blockquote>We are called by God to reach out and serve others in Christ's name. It is through the guidance of the Holy Spirit that we humbly serve a God of love.</blockquote>
+							<blockquote data-setting="mission_text">We are called by God to reach out and serve others in Christ's name. It is through the guidance of the Holy Spirit that we humbly serve a God of love.</blockquote>
 						</div>
 						<div class="ein-card">
 							<div class="section-label" style="margin-bottom:0.4rem;">501(c)(3) Organization</div>
@@ -87,7 +89,7 @@
 		<section class="ministries-section" id="ministries">
 			<div class="section-inner">
 				<div class="section-label reveal">What We Do</div>
-				<h2 class="section-title reveal delay-1">Our Outreach &amp; Goals for 2024</h2>
+				<h2 class="section-title reveal delay-1">Our Outreach &amp; Goals for 2026</h2>
 				<div class="ministries-grid">
 					<a href="chariots-for-jesus.html" class="ministry-card ministry-card-link reveal delay-1">
 						<span class="ministry-icon">&#127937;</span>
@@ -114,11 +116,11 @@
 						<h3>Racing Chaplain</h3>
 						<p>Serving as team chaplain for the Carolina Pro Late Model Series (CPLMS) and the CCMSS racing communities.</p>
 					</div>
-					<div class="ministry-card reveal delay-6">
+					<a href="https://www.vanderburgchurch.org" target="_blank" rel="noopener" class="ministry-card ministry-card-link reveal delay-6">
 						<span class="ministry-icon">&#9962;</span>
 						<h3>Vanderburg Methodist</h3>
 						<p>Serving as minister at Vanderburg Methodist in Mooresville, NC &#8212; watch sermons at YouTube @Vanderburg1809.</p>
-					</div>
+					</a>
 				</div>
 			</div>
 		</section>
@@ -129,8 +131,8 @@
 					<div class="section-label reveal" style="justify-content:center">A Word From Pastor Hugh</div>
 					<h2 class="section-title reveal delay-1" style="text-align:center">Welcome Message</h2>
 					<div class="verse-block reveal delay-2">
-						<p>&#8220;For I am not ashamed of the gospel of Christ: for it is the power of God unto salvation to every one that believeth.&#8221;</p>
-						<cite>Romans 1:16</cite>
+						<p data-setting="verse_text">&#8220;For I am not ashamed of the gospel of Christ: for it is the power of God unto salvation to every one that believeth.&#8221;</p>
+						<cite data-setting="verse_reference">Romans 1:16</cite>
 					</div>
 					<p class="reveal delay-3">If you're looking for spiritual encouragement to carry you through the week, join us each Wednesday on YouTube. Maybe that message is exactly what you need to get through until you can be with your church family on Sunday.</p>
 					<p class="reveal delay-4">We also offer <em>Our Daily Bread</em> devotional booklet free of charge each month to any who request it. This ministry is made possible through your generous donations and the grace of God.</p>
@@ -138,6 +140,20 @@
 						<a href="https://www.youtube.com/@hughcompton4575" target="_blank" class="btn-primary">Watch on YouTube</a>
 						<a href="#donate" class="btn-secondary">Request Daily Bread</a>
 					</div>
+					<div class="reveal delay-6" style="margin-top:1.5rem; text-align:center;">
+						<a href="questions-answers.html" class="btn-secondary">Questions &amp; Answers</a>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="events-section" id="events">
+			<div class="section-inner">
+				<div class="section-label reveal" style="justify-content:center">What's Coming Up</div>
+				<h2 class="section-title reveal delay-1" style="text-align:center">Upcoming Events</h2>
+				<div class="events-preview-list reveal delay-2"></div>
+				<div class="reveal delay-3" style="text-align:center; margin-top:2rem;">
+					<a href="events.html" class="btn-primary" style="font-size:0.8rem; padding:1rem 3rem;">View All Events</a>
 				</div>
 			</div>
 		</section>
@@ -187,7 +203,7 @@
 				<h2 class="section-title reveal delay-1" style="text-align:center">All of This Is Possible<br>Through Your Donations</h2>
 				<p class="reveal delay-2">Sons of Thunder Ministry depends on the generosity of supporters like you to continue reaching racers, hospital patients, and community members with the love of Christ. Every gift makes a difference.</p>
 				<div class="reveal delay-3">
-					<a href="mailto:info@sons-of-thunder-ministry.org" class="btn-primary" style="font-size:0.8rem; padding:1rem 3rem;">Make a Donation</a>
+					<a href="#" onclick="event.preventDefault();" class="btn-primary" style="font-size:0.8rem; padding:1rem 3rem;" data-setting-donation>Make a Donation</a>
 				</div>
 				<div class="reveal delay-4">
 					<span class="tax-info">501(c)(3) &nbsp;&#183;&nbsp; EIN 20-0522987 &nbsp;&#183;&nbsp; All donations are tax-deductible</span>
@@ -197,15 +213,23 @@
 
 		<footer>
 			<div class="footer-logo">Sons of Thunder Ministry</div>
-			<p class="footer-tagline">"Lifting up the name of Jesus one lap at a time"</p>
+			<p class="footer-tagline" data-setting="hero_subtitle">"Lifting up the name of Jesus one lap at a time"</p>
 			<ul class="footer-links">
 				<li><a href="#about">About</a></li>
 				<li><a href="#ministries">Ministries</a></li>
 				<li><a href="#message">Message</a></li>
+				<li><a href="events.html">Events</a></li>
 				<li><a href="#board">Board</a></li>
 				<li><a href="#sermons">Sermons</a></li>
 				<li><a href="#donate">Donate</a></li>
-				<li><a href="https://www.youtube.com/@hughcompton4575" target="_blank">YouTube</a></li>
+				<li><a href="https://www.youtube.com/@hughcompton4575" target="_blank" data-setting-link="youtube_url">YouTube</a></li>
+			</ul>
+			<ul class="footer-contact">
+				<li><a href="#" data-setting-link="contact_email" data-setting-hide-when-empty style="display:none;" aria-label="Email">Email</a></li>
+				<li><a href="#" data-setting-link="contact_phone" data-setting-hide-when-empty style="display:none;" aria-label="Phone">Phone</a></li>
+				<li><span data-setting="contact_address" data-setting-hide-when-empty style="display:none;"></span></li>
+				<li><a href="#" target="_blank" rel="noopener" data-setting-link="facebook_url" data-setting-hide-when-empty style="display:none;" aria-label="Facebook">Facebook</a></li>
+				<li><a href="#" target="_blank" rel="noopener" data-setting-link="instagram_url" data-setting-hide-when-empty style="display:none;" aria-label="Instagram">Instagram</a></li>
 			</ul>
 			<div class="footer-bottom">
 				<p>Sons of Thunder Ministry, Inc. &nbsp;&#183;&nbsp; Mooresville, NC &nbsp;&#183;&nbsp; 501(c)(3) EIN 20-0522987</p>
@@ -218,6 +242,14 @@
 			<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
 		</button>
 
+		<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+		<script src="js/supabase-client.js"></script>
+		<script src="js/site-settings-loader.js"></script>
+		<script src="js/events.js"></script>
+		<script src="js/events-page.js"></script>
+		<script>
+			EventsPage.renderHomepagePreview();
+		</script>
 		<script>
 		var nav = document.getElementById('mainNav');
 		var scrollTopBtn = document.getElementById('scrollTop');
