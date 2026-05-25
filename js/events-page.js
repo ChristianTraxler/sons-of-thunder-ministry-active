@@ -54,6 +54,51 @@ var EventsPage = (function () {
 			+ '</article>';
 	}
 
+	// Group past events (already sorted newest-first) into
+	// year → month buckets, preserving descending order.
+	function groupByYearMonth(events) {
+		var years = [];
+		var yearMap = {};
+		events.forEach(function (ev) {
+			var d = new Date(ev.eventDate + 'T00:00:00');
+			var year = d.getFullYear();
+			var monthKey = year + '-' + d.getMonth();
+			var monthLabel = d.toLocaleDateString('en-US', { month: 'long' });
+
+			var yObj = yearMap[year];
+			if (!yObj) {
+				yObj = yearMap[year] = { year: year, months: [], monthMap: {} };
+				years.push(yObj);
+			}
+			var mObj = yObj.monthMap[monthKey];
+			if (!mObj) {
+				mObj = yObj.monthMap[monthKey] = { label: monthLabel, events: [] };
+				yObj.months.push(mObj);
+			}
+			mObj.events.push(ev);
+		});
+		return years;
+	}
+
+	function pastGroupedHtml(events) {
+		return groupByYearMonth(events).map(function (yObj) {
+			var monthsHtml = yObj.months.map(function (m) {
+				return '<div class="events-month-group">'
+					+ '<h4 class="events-month-heading">' + m.label + '</h4>'
+					+ '<div class="events-list">'
+					+ m.events.map(function (e) { return cardHtml(e, 'full'); }).join('')
+					+ '</div>'
+					+ '</div>';
+			}).join('');
+			return '<div class="events-year-group">'
+				+ '<button type="button" class="events-year-heading" aria-expanded="false">'
+				+ '<span class="events-year-arrow"></span>' + yObj.year
+				+ '</button>'
+				+ '<div class="events-year-content"><div class="events-year-content-inner">' + monthsHtml + '</div></div>'
+				+ '</div>';
+		}).join('');
+	}
+
 	function renderHomepagePreview() {
 		var section = document.getElementById('events');
 		if (!section) return;
@@ -99,7 +144,15 @@ var EventsPage = (function () {
 							pastList.innerHTML = '<p class="events-empty">No past events.</p>';
 							return;
 						}
-						pastList.innerHTML = events.map(function (e) { return cardHtml(e, 'full'); }).join('');
+						pastList.innerHTML = pastGroupedHtml(events);
+						// Collapse/expand a year group when its heading is clicked.
+						pastList.addEventListener('click', function (ev) {
+							var btn = ev.target.closest('.events-year-heading');
+							if (!btn) return;
+							var group = btn.parentNode;
+							var isOpen = group.classList.toggle('open');
+							btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+						});
 					});
 				}
 			});

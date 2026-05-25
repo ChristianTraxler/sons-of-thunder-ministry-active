@@ -1,0 +1,42 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Editors / IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment / secrets
+# (Supabase anon key is safe in client code; this is for anything truly secret
+#  — service_role keys, DB passwords, API keys for other services, etc.)
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# Local-only notes or scratch files
+/private/
+/scratch/
+*.local.*
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# Build / dependency output (in case we ever add tooling)
+node_modules/
+dist/
+build/
+.cache/

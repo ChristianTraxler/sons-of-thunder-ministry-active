@@ -38,6 +38,14 @@
 	padding: 2rem 0 6rem;
 	background: var(--bg, #0a0a0d);
 }
+/* These sections set their own vertical padding; the base
+   .section-inner rule adds 6rem more, so zero it out here to
+   avoid a doubled gap (keep the horizontal gutter). */
+.events-page-hero .section-inner,
+.events-list-section .section-inner {
+	padding-top: 0;
+	padding-bottom: 0;
+}
 .events-list {
 	display: grid;
 	gap: 1.25rem;
@@ -84,6 +92,79 @@
 	opacity: 0.65;
 }
 .events-past-wrap.is-open .events-past-list {
+	display: block;
+}
+
+/* ---- Past events grouped by collapsible year / month ---- */
+.events-year-group {
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+.events-year-heading {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+	width: 100%;
+	padding: 1rem 0;
+	background: none;
+	border: none;
+	cursor: pointer;
+	text-align: left;
+	font-family: 'Cinzel', serif;
+	font-size: 1.3rem;
+	font-weight: 700;
+	color: var(--gold);
+	letter-spacing: 0.05em;
+	transition: color 0.2s;
+}
+.events-year-heading:hover {
+	color: var(--gold-light, #fff);
+}
+.events-year-arrow {
+	display: inline-block;
+	width: 0;
+	height: 0;
+	border-top: 5px solid transparent;
+	border-bottom: 5px solid transparent;
+	border-left: 7px solid currentColor;
+	transition: transform 0.25s ease;
+	flex-shrink: 0;
+}
+.events-year-group.open .events-year-arrow {
+	transform: rotate(90deg);
+}
+/* Collapsible content animates via grid-template-rows 0fr -> 1fr,
+   which transitions to the content's natural height with no magic
+   numbers. The inner wrapper clips the content while collapsed. */
+.events-year-content {
+	display: grid;
+	grid-template-rows: 0fr;
+	padding-left: 1.2rem;
+	transition: grid-template-rows 0.3s ease;
+}
+.events-year-group.open .events-year-content {
+	grid-template-rows: 1fr;
+}
+.events-year-content-inner {
+	min-height: 0;
+	overflow: hidden;
+}
+.events-year-group.open .events-year-content-inner {
+	padding-bottom: 1.5rem;
+}
+@media (prefers-reduced-motion: reduce) {
+	.events-year-content {
+		transition: none;
+	}
+}
+.events-month-heading {
+	font-family: 'Cinzel', serif;
+	font-size: 0.85rem;
+	text-transform: uppercase;
+	letter-spacing: 0.15em;
+	color: var(--text-muted);
+	margin: 1.25rem 0 0.85rem;
+}
+.events-month-group .events-list {
 	display: grid;
 }
 
