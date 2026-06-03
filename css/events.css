@@ -156,16 +156,66 @@
 		transition: none;
 	}
 }
+.events-month-group + .events-month-group {
+	margin-top: 0.25rem;
+}
 .events-month-heading {
+	display: flex;
+	align-items: center;
+	gap: 0.55rem;
+	width: 100%;
+	padding: 0.65rem 0;
+	background: none;
+	border: none;
+	cursor: pointer;
+	text-align: left;
 	font-family: 'Cinzel', serif;
 	font-size: 0.85rem;
+	font-weight: 500;
 	text-transform: uppercase;
 	letter-spacing: 0.15em;
 	color: var(--text-muted);
-	margin: 1.25rem 0 0.85rem;
+	transition: color 0.2s;
+}
+.events-month-heading:hover {
+	color: var(--gold);
+}
+.events-month-arrow {
+	display: inline-block;
+	width: 0;
+	height: 0;
+	border-top: 4px solid transparent;
+	border-bottom: 4px solid transparent;
+	border-left: 6px solid currentColor;
+	transition: transform 0.25s ease;
+	flex-shrink: 0;
+}
+.events-month-group.open .events-month-arrow {
+	transform: rotate(90deg);
+}
+.events-month-content {
+	display: grid;
+	grid-template-rows: 0fr;
+	transition: grid-template-rows 0.3s ease;
+}
+.events-month-group.open .events-month-content {
+	grid-template-rows: 1fr;
+}
+.events-month-content-inner {
+	min-height: 0;
+	overflow: hidden;
+	padding-top: 3px;
+}
+.events-month-group.open .events-month-content-inner {
+	padding-bottom: 0.75rem;
 }
 .events-month-group .events-list {
 	display: grid;
+}
+@media (prefers-reduced-motion: reduce) {
+	.events-month-content {
+		transition: none;
+	}
 }
 
 /* ---- Event card ---- */

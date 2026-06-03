@@ -84,10 +84,14 @@ var EventsPage = (function () {
 		return groupByYearMonth(events).map(function (yObj) {
 			var monthsHtml = yObj.months.map(function (m) {
 				return '<div class="events-month-group">'
-					+ '<h4 class="events-month-heading">' + m.label + '</h4>'
+					+ '<button type="button" class="events-month-heading" aria-expanded="false">'
+					+ '<span class="events-month-arrow"></span>' + m.label
+					+ '</button>'
+					+ '<div class="events-month-content"><div class="events-month-content-inner">'
 					+ '<div class="events-list">'
 					+ m.events.map(function (e) { return cardHtml(e, 'full'); }).join('')
 					+ '</div>'
+					+ '</div></div>'
 					+ '</div>';
 			}).join('');
 			return '<div class="events-year-group">'
@@ -145,13 +149,32 @@ var EventsPage = (function () {
 							return;
 						}
 						pastList.innerHTML = pastGroupedHtml(events);
-						// Collapse/expand a year group when its heading is clicked.
+						// Collapse/expand year and month groups when their headings are clicked.
 						pastList.addEventListener('click', function (ev) {
-							var btn = ev.target.closest('.events-year-heading');
-							if (!btn) return;
-							var group = btn.parentNode;
-							var isOpen = group.classList.toggle('open');
-							btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+							var yearBtn = ev.target.closest('.events-year-heading');
+							if (yearBtn) {
+								var yearGroup = yearBtn.parentNode;
+								var yearOpen = yearGroup.classList.toggle('open');
+								yearBtn.setAttribute('aria-expanded', yearOpen ? 'true' : 'false');
+
+								if (yearOpen) {
+									var monthGroups = yearGroup.querySelectorAll('.events-month-group');
+									var anyOpen = yearGroup.querySelector('.events-month-group.open');
+									if (monthGroups.length && !anyOpen) {
+										monthGroups[0].classList.add('open');
+										var firstBtn = monthGroups[0].querySelector('.events-month-heading');
+										if (firstBtn) firstBtn.setAttribute('aria-expanded', 'true');
+									}
+								}
+								return;
+							}
+
+							var monthBtn = ev.target.closest('.events-month-heading');
+							if (monthBtn) {
+								var monthGroup = monthBtn.parentNode;
+								var monthOpen = monthGroup.classList.toggle('open');
+								monthBtn.setAttribute('aria-expanded', monthOpen ? 'true' : 'false');
+							}
 						});
 					});
 				}
